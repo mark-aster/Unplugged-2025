@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.subsystems.Debug;
 import org.firstinspires.ftc.teamcode.subsystems.Input;
 
 @TeleOp(name = "Claw Test", group = "Tests")
@@ -63,12 +62,12 @@ public class ClawTest extends LinearOpMode {
                 intakeHorizontal.setPosition(horizontalClock);
             }
 
-            if(Input.OnKeyDown("a", gamepad1.a))
+            if(Input.onKeyDown("a", gamepad1.a))
             {
                 rightClaw.setPosition(rightClawOpen);
                 leftClaw.setPosition(leftClawOpen);
             }
-            if(Input.OnKeyDown("b", gamepad1.b))
+            if(Input.onKeyDown("b", gamepad1.b))
             {
                 rightClaw.setPosition(rightClawClosed);
                 leftClaw.setPosition(leftClawClosed);

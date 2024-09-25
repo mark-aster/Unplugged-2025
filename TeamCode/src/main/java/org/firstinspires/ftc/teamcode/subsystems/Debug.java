@@ -19,8 +19,8 @@ public class Debug
     public static<T> void log(String caption, T message)
     {
         dhTelemetry.addData(caption, message);
-        dashboardTelemetry.addData(caption, message);
         dhTelemetry.update();
+        dashboardTelemetry.addData(caption, message);
         dashboardTelemetry.update();
     }
 }

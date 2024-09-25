@@ -7,7 +7,7 @@ public class Input
 {
     private static Map<String, Boolean> previousStates = new HashMap<>();
 
-    public static boolean OnKeyDown(String buttonName, boolean currentState)
+    public static boolean onKeyDown(String buttonName, boolean currentState)
     {
         boolean previousState = Boolean.TRUE.equals(previousStates.getOrDefault(buttonName, false));
 
@@ -21,7 +21,7 @@ public class Input
         return false;
     }
 
-    public static boolean OnKeyUp(String buttonName, boolean currentState)
+    public static boolean onKeyUp(String buttonName, boolean currentState)
     {
         boolean previousState = Boolean.TRUE.equals(previousStates.getOrDefault(buttonName, false));
 
@@ -33,7 +33,7 @@ public class Input
         return false;
     }
 
-    public static boolean IsDown(String buttonName, boolean currentState)
+    public static boolean isDown(String buttonName, boolean currentState)
     {
         return Boolean.TRUE.equals(previousStates.getOrDefault(buttonName, currentState));
     }

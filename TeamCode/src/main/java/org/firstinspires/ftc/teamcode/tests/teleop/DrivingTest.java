@@ -1,6 +1,5 @@
-package org.firstinspires.ftc.teamcode.tests;
+package org.firstinspires.ftc.teamcode.tests.teleop;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
@@ -37,8 +36,8 @@ public class DrivingTest extends LinearOpMode
                     )
             );
 
-            slow ^= Input.OnKeyDown("right_bumper", gamepad1.right_bumper);
-            invert ^= Input.OnKeyDown("left_bumper", gamepad1.left_bumper);
+            slow ^= Input.onKeyDown("right_bumper", gamepad1.right_bumper);
+            invert ^= Input.onKeyDown("left_bumper", gamepad1.left_bumper);
 
             invertMultiplier = (byte) (invert ? 1 : -1);
             slowMultiplier = (byte) (slow ? 3 : 1);

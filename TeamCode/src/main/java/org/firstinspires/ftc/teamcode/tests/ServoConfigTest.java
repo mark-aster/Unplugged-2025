@@ -41,23 +41,23 @@ public class ServoConfigTest extends LinearOpMode
 
     private void Update()
     {
-        servoIndex += (Input.OnKeyDown("right_bumper", gamepad1.right_bumper)
+        servoIndex += (Input.onKeyDown("right_bumper", gamepad1.right_bumper)
                 && servoIndex <= SERVO_PIN_COUNT - 1) ? 1 : 0;
 
-        servoIndex -= (Input.OnKeyDown("left_bumper", gamepad1.left_bumper)
+        servoIndex -= (Input.onKeyDown("left_bumper", gamepad1.left_bumper)
                 && servoIndex >= 0) ? 1 : 0;
 
         multiplier = (gamepad1.right_trigger > 0.1) ? 100 : (gamepad1.left_trigger > 0.1) ? 10 : 1;
 
-        servoPosition += (Input.OnKeyDown("dpad_right",gamepad1.dpad_right)
+        servoPosition += (Input.onKeyDown("dpad_right",gamepad1.dpad_right)
                 && servoPosition < 1) ? 0.001 * multiplier : 0;
 
-        servoPosition -= (Input.OnKeyDown("dpad_left", gamepad1.dpad_left)
+        servoPosition -= (Input.onKeyDown("dpad_left", gamepad1.dpad_left)
                 && servoPosition > 0) ? 0.001 * multiplier : 0;
 
-        isCH = Input.OnKeyDown("start", gamepad1.start) != isCH;
+        isCH = Input.onKeyDown("start", gamepad1.start) != isCH;
 
-        if (Input.OnKeyDown("a", gamepad1.a) || Apply) {
+        if (Input.onKeyDown("a", gamepad1.a) || Apply) {
             (isCH ? servosCH : servosEH)[servoIndex].setPosition(servoPosition);
             Apply = false;
         }
