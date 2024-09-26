@@ -13,9 +13,9 @@ public class Motors implements Hardware
 
     @Override
     public void init(HardwareMap hardwareMap) {
-        leftFront = hardwareMap.tryGet(DcMotorEx.class, "leftFront");
-        leftRear = hardwareMap.tryGet(DcMotorEx.class, "leftRear");
-        rightFront = hardwareMap.tryGet(DcMotorEx.class, "rightFront");
-        rightRear = hardwareMap.tryGet(DcMotorEx.class, "rightRear");
+        leftFront = hardwareMap.tryGet(DcMotor.class, "leftFront");
+        leftRear = hardwareMap.tryGet(DcMotor.class, "leftBack");
+        rightFront = hardwareMap.tryGet(DcMotor.class, "rightFront");
+        rightRear = hardwareMap.tryGet(DcMotor.class, "rightBack");
     }
 }
