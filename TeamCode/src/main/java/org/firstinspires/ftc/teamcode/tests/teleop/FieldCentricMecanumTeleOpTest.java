@@ -15,6 +15,7 @@ public class FieldCentricMecanumTeleOpTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         // Declare our motors
         // Make sure your ID's match your configuration
+        Motors.init(hardwareMap);
         DcMotor frontLeftMotor = Motors.leftFront;
         DcMotor backLeftMotor = Motors.leftRear;
         DcMotor frontRightMotor = Motors.rightFront;
@@ -24,8 +25,8 @@ public class FieldCentricMecanumTeleOpTest extends LinearOpMode {
         // If your robot moves backwards when commanded to go forwards,
         // reverse the left side instead.
         // See the note about this earlier on this page.
-        frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        Motors.leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        Motors.leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Retrieve the IMU from the hardware map
         IMU imu = hardwareMap.get(IMU.class, "imu");

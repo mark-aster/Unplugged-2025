@@ -13,6 +13,7 @@ public class RobotCentricMecanumTeleOpTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         // Declare our motors
         // Make sure your ID's match your configuration
+        Motors.init(hardwareMap);
         DcMotor frontLeftMotor = Motors.leftFront;
         DcMotor backLeftMotor = Motors.leftRear;
         DcMotor frontRightMotor = Motors.rightFront;
@@ -22,6 +23,7 @@ public class RobotCentricMecanumTeleOpTest extends LinearOpMode {
         // If your robot moves backwards when commanded to go forwards,
         // reverse the left side instead.
         // See the note about this earlier on this page.
+
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 

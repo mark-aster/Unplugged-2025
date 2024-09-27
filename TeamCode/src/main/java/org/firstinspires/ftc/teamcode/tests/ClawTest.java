@@ -31,10 +31,9 @@ public class ClawTest extends LinearOpMode {
         double horizontalClock = 0;
         double horizontalMid = 0.31;
 
-        double rightClawOpen = 0;
-        double rightClawClosed = 0.47;
-
-        double leftClawOpen = 0;
+        double rightClawOpen = 0.1;
+        double rightClawClosed = 0.37;
+        double leftClawOpen = 0.3;
         double leftClawClosed = 0.62;
 
         waitForStart();
