@@ -3,10 +3,17 @@ package org.firstinspires.ftc.teamcode.subsystems.hardware;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class Servos implements Hardware
+public class Servos
 {
-    @Override
-    public void init(HardwareMap hardwareMap) {
+    public static Servo intakeVertical;
+    public static Servo intakeHorizontal;
+    public static Servo rightClaw;
+    public static Servo leftClaw;
 
+    public static void init(HardwareMap hardwareMap) {
+        intakeVertical = hardwareMap.get(Servo.class, "CH0");
+        intakeHorizontal = hardwareMap.get(Servo.class, "CH1");
+        rightClaw = hardwareMap.get(Servo.class, "CH3");
+        leftClaw = hardwareMap.get(Servo.class, "CH2");
     }
 }

@@ -62,8 +62,8 @@ public class ServoConfigTest extends LinearOpMode
             Apply = false;
         }
 
-        Debug.log("servoIndex", servoIndex);
-        Debug.log("servoPosition", servoPosition);
+        Debug.log("motorIndex", servoIndex);
+        Debug.log("motorPosition", servoPosition);
         Debug.log("isCH", isCH);
     }
 

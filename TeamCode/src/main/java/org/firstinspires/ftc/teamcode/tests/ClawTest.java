@@ -31,19 +31,19 @@ public class ClawTest extends LinearOpMode {
         double horizontalClock = 0;
         double horizontalMid = 0.31;
 
-        double rightClawOpen = 0.1;
+        double rightClawOpen = 0.1; //3
         double rightClawClosed = 0.37;
-        double leftClawOpen = 0.3;
-        double leftClawClosed = 0.62;
+        double leftClawOpen = 0.5; //2
+        double leftClawClosed = 0.80;
 
         waitForStart();
         while(opModeIsActive())
         {
-            if(gamepad1.left_stick_y < -0.1)
+            if(gamepad1.left_stick_x < -0.1)
             {
                 intakeVertical.setPosition(verticalSpecimen);
             }
-            if(gamepad1.left_stick_y > 0.1)
+            if(gamepad1.left_stick_x > 0.1)
             {
                 intakeVertical.setPosition(verticalIdle);
             }
@@ -72,5 +72,7 @@ public class ClawTest extends LinearOpMode {
                 leftClaw.setPosition(leftClawClosed);
             }
         }
+
+
     }
 }
