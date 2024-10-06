@@ -8,21 +8,23 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.subsystems.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.Input;
+import org.firstinspires.ftc.teamcode.subsystems.hardware.Generic;
 import org.firstinspires.ftc.teamcode.subsystems.hardware.Motors;
 import org.firstinspires.ftc.teamcode.subsystems.hardware.Servos;
 
-@TeleOp(name="TeleJannikTest")
-@Config
-public class TeleJannikTest extends LinearOpMode {
+@TeleOp(name="TeleJannikTest", group = "TeleopTests")
+public class TeleJannikTest extends LinearOpMode
+{
     @Override
-    public void runOpMode() throws InterruptedException {
-
+    public void runOpMode() throws InterruptedException
+    {
         Init();
         waitForStart();
 
         if (isStopRequested()) return;
 
-        while (opModeIsActive()) {
+        while (opModeIsActive())
+        {
             Update();
         }
     }
@@ -31,6 +33,7 @@ public class TeleJannikTest extends LinearOpMode {
     {
         Motors.init(hardwareMap);
         Servos.init(hardwareMap);
+        Generic.init(hardwareMap);
 
         Motors.rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         Motors.rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -40,6 +43,7 @@ public class TeleJannikTest extends LinearOpMode {
     {
         Move();
         Claw();
+        Arm();
     }
 
     private void Move()
@@ -59,33 +63,43 @@ public class TeleJannikTest extends LinearOpMode {
         Motors.rightFront.setPower(frontRightPower);
         Motors.rightRear.setPower(backRightPower);
     }
+
+    private boolean isClawOpened = false;
+
     private void Claw()
     {
+        Servos.intakeVertical.scaleRange(Constants.Claw.verticalIdle, Constants.Claw.verticalSpecimen);
+        Servos.intakeHorizontal.scaleRange(Constants.Claw.horizontalClock, Constants.Claw.horizontalCClock);
+        Servos.rightClaw.scaleRange(Constants.Claw.rightClawOpen, Constants.Claw.rightClawClosed);
+        Servos.leftClaw.scaleRange(Constants.Claw.leftClawOpen, Constants.Claw.leftClawClosed);
+
         Servos.intakeVertical.setPosition(
-                gamepad2.left_stick_y < -0.1 ? Constants.Claw.verticalSpecimen :
-                        gamepad2.left_stick_y > 0.1 ? Constants.Claw.verticalIdle :
-                                Servos.intakeVertical.getPosition() // retain the current position if no condition is met
+                gamepad2.left_stick_y < -0.1 ? 0 :
+                        gamepad2.left_stick_y > 0.1 ? 1 :
+                                Servos.intakeVertical.getPosition()
         );
 
         Servos.intakeHorizontal.setPosition(
                 gamepad2.right_stick_y < -0.1 ? Constants.Claw.horizontalMid :
-                        gamepad2.right_stick_x < -0.1 ? Constants.Claw.horizontalCClock :
-                                gamepad2.right_stick_x > 0.1 ? Constants.Claw.horizontalClock :
-                                        Servos.intakeHorizontal.getPosition() // retain the current position if no condition is met
+                        gamepad2.right_stick_x < -0.1 ? 1 :
+                                gamepad2.right_stick_x > 0.1 ? 0 :
+                                        Servos.intakeHorizontal.getPosition()
         );
 
 
         if(Input.onKeyDown("a", gamepad2.a))
         {
-            if(Servos.rightClaw.getPosition() == Constants.Claw.rightClawClosed)
+            if(!isClawOpened)
             {
-                Servos.rightClaw.setPosition(Constants.Claw.rightClawOpen);
-                Servos.leftClaw.setPosition(Constants.Claw.leftClawOpen);
+                Servos.rightClaw.setPosition(0);
+                Servos.leftClaw.setPosition(0);
+                isClawOpened = true;
             }
             else
             {
-                Servos.rightClaw.setPosition(Constants.Claw.rightClawClosed);
-                Servos.leftClaw.setPosition(Constants.Claw.leftClawClosed);
+                Servos.rightClaw.setPosition(1);
+                Servos.leftClaw.setPosition(1);
+                isClawOpened = false;
             }
         }
     }

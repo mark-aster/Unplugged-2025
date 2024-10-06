@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Input;
 import org.firstinspires.ftc.teamcode.subsystems.hardware.Motors;
 import org.firstinspires.ftc.teamcode.subsystems.hardware.Servos;
 
-@TeleOp
+@TeleOp(group = "TeleopTests")
 public class RobotCentricMecanumTeleOpTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

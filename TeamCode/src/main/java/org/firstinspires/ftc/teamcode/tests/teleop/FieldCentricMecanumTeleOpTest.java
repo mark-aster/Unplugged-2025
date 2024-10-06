@@ -9,7 +9,7 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.subsystems.hardware.Motors;
 
-@TeleOp
+@TeleOp(group = "TeleopTests")
 public class FieldCentricMecanumTeleOpTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

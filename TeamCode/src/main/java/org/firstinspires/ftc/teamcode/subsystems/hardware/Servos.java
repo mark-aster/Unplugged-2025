@@ -10,6 +10,7 @@ public class Servos
     public static Servo rightClaw;
     public static Servo leftClaw;
 
+    //TODO Change servo names to actual function names
     public static void init(HardwareMap hardwareMap) {
         intakeVertical = hardwareMap.get(Servo.class, "CH0");
         intakeHorizontal = hardwareMap.get(Servo.class, "CH1");

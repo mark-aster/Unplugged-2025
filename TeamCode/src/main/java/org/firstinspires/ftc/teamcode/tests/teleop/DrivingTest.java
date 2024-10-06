@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.Input;
 
-@TeleOp(name = "Driving Test", group = "Tests")
+@TeleOp(name = "RoadrunnerTeleOpTest", group = "TeleopTests")
 public class DrivingTest extends LinearOpMode
 {
     MecanumDrive drive;
