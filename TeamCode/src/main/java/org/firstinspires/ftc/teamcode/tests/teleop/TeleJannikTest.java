@@ -1,13 +1,13 @@
 package org.firstinspires.ftc.teamcode.tests.teleop;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.subsystems.Constants;
+import org.firstinspires.ftc.teamcode.subsystems.Debug;
 import org.firstinspires.ftc.teamcode.subsystems.Input;
+import org.firstinspires.ftc.teamcode.subsystems.OpenCV;
 import org.firstinspires.ftc.teamcode.subsystems.hardware.Generic;
 import org.firstinspires.ftc.teamcode.subsystems.hardware.Motors;
 import org.firstinspires.ftc.teamcode.subsystems.hardware.Servos;
@@ -42,7 +42,7 @@ public class TeleJannikTest extends LinearOpMode
     private void Update()
     {
         Move();
-        Claw();
+        //UpdateClaw();
         Arm();
     }
 
@@ -66,18 +66,25 @@ public class TeleJannikTest extends LinearOpMode
 
     private boolean isClawOpened = false;
 
-    private void Claw()
+    private void UpdateClaw()
     {
-        Servos.intakeVertical.scaleRange(Constants.Claw.verticalIdle, Constants.Claw.verticalSpecimen);
-        Servos.intakeHorizontal.scaleRange(Constants.Claw.horizontalClock, Constants.Claw.horizontalCClock);
-        Servos.rightClaw.scaleRange(Constants.Claw.rightClawOpen, Constants.Claw.rightClawClosed);
-        Servos.leftClaw.scaleRange(Constants.Claw.leftClawOpen, Constants.Claw.leftClawClosed);
+        HandleHorizontalRotation();
+        HandleVerticalRotation();
+        HandleClaws();
+    }
+
+    private void HandleVerticalRotation()
+    {
 
         Servos.intakeVertical.setPosition(
                 gamepad2.left_stick_y < -0.1 ? 0 :
                         gamepad2.left_stick_y > 0.1 ? 1 :
                                 Servos.intakeVertical.getPosition()
         );
+    }
+
+    private void HandleHorizontalRotation()
+    {
 
         Servos.intakeHorizontal.setPosition(
                 gamepad2.right_stick_y < -0.1 ? Constants.Claw.horizontalMid :
@@ -85,7 +92,10 @@ public class TeleJannikTest extends LinearOpMode
                                 gamepad2.right_stick_x > 0.1 ? 0 :
                                         Servos.intakeHorizontal.getPosition()
         );
+    }
 
+    private void HandleClaws()
+    {
 
         if(Input.onKeyDown("a", gamepad2.a))
         {

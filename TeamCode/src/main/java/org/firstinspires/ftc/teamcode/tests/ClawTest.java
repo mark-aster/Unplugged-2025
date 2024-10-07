@@ -9,10 +9,10 @@ import org.firstinspires.ftc.teamcode.subsystems.Input;
 @TeleOp(name = "Claw Test", group = "Tests")
 public class ClawTest extends LinearOpMode {
 
-    Servo intakeVertical;
-    Servo intakeHorizontal;
-    Servo rightClaw;
-    Servo leftClaw;
+    Servo intakeVertical; //0
+    Servo intakeHorizontal; //1
+    Servo rightClaw; //3
+    Servo leftClaw; //2
 
     @Override
     public void runOpMode() throws InterruptedException {
