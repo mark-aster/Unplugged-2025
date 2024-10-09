@@ -43,13 +43,10 @@ public class MotorConfigTest extends LinearOpMode
         Motors.init(hardwareMap);
 
         motorsArm = new DcMotorEx[]{
-                Motors.armLeft,
                 Motors.armRight
         };
-        Encoder arm1 = new OverflowEncoder(new RawEncoder(motorsArm[1]));
-        arm1.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        for(int i = 0; i < 2; i++)
+        for(int i = 0; i < 1; i++)
         {
             motorsArm[i].setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motorsArm[i].setTargetPosition(0);

@@ -14,14 +14,18 @@ public class Servos
 
     //TODO Change servo names to actual function names
     public static void init(HardwareMap hardwareMap) {
-        intakeVertical = hardwareMap.get(Servo.class, "CH0");
-        intakeHorizontal = hardwareMap.get(Servo.class, "CH1");
-        rightClaw = hardwareMap.get(Servo.class, "CH3");
-        leftClaw = hardwareMap.get(Servo.class, "CH2");
+        try
+        {
+            intakeVertical = hardwareMap.get(Servo.class, "CH0");
+            intakeHorizontal = hardwareMap.get(Servo.class, "CH1");
+            rightClaw = hardwareMap.get(Servo.class, "CH3");
+            leftClaw = hardwareMap.get(Servo.class, "CH2");
 
-        Servos.intakeVertical.scaleRange(Constants.Claw.verticalIdle, Constants.Claw.verticalSpecimen);
-        Servos.intakeHorizontal.scaleRange(Constants.Claw.horizontalClock, Constants.Claw.horizontalCClock);
-        Servos.rightClaw.scaleRange(Constants.Claw.rightClawOpen, Constants.Claw.rightClawClosed);
-        Servos.leftClaw.scaleRange(Constants.Claw.leftClawOpen, Constants.Claw.leftClawClosed);
+            Servos.intakeVertical.scaleRange(Constants.Claw.verticalIdle, Constants.Claw.verticalSpecimen);
+            Servos.intakeHorizontal.scaleRange(Constants.Claw.horizontalClock, Constants.Claw.horizontalCClock);
+            Servos.rightClaw.scaleRange(Constants.Claw.rightClawOpen, Constants.Claw.rightClawClosed);
+            Servos.leftClaw.scaleRange(Constants.Claw.leftClawOpen, Constants.Claw.leftClawClosed);
+        }
+        catch (Exception ignore) {}
     }
 }

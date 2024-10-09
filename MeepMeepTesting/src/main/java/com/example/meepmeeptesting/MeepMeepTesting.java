@@ -1,5 +1,4 @@
 package com.example.meepmeeptesting;
-
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 
@@ -7,37 +6,65 @@ import org.rowlandhall.meepmeep.MeepMeep;
 import org.rowlandhall.meepmeep.roadrunner.DefaultBotBuilder;
 import org.rowlandhall.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
-public class MeepMeepTesting {
-    public static void main(String[] args) {
-        MeepMeep meepMeep = new MeepMeep(800);
+public class MeepMeepTesting
+{
+    static MeepMeep meepMeep;
+    static Pose2d startPos = new Pose2d(-36,-60, Math.toRadians(90));
+    static Pose2d samplePos = new Pose2d(startPos.getX()+4, startPos.getY()+36);
 
-        RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
-                // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(60,60,180,50,15)
-                .followTrajectorySequence(drive -> drive.trajectorySequenceBuilder(new Pose2d(-59+24, -61, Math.toRadians(90)))
-                        .lineToSplineHeading(new Pose2d(-59+24-6, -61+6, Math.toRadians(90+14.3)))
-                        .lineToSplineHeading(new Pose2d(-59+24-6, -61+7, Math.toRadians(180+14.3)))
-                        .lineToSplineHeading(new Pose2d(-59+24-6, -61+6, Math.toRadians(90+30.2)))
-                        .lineToSplineHeading(new Pose2d(-59+24-6, -61+7, Math.toRadians(180+14.3)))
-                        .lineToSplineHeading(new Pose2d(-59+24-6, -61+6, Math.toRadians(90+42.7)))
-                        .lineToSplineHeading(new Pose2d(-59+24-6, -61+7, Math.toRadians(180+14.3)))
+    public static void main(String[] args)
+    {
+        meepMeep = new MeepMeep(800);
 
-                        .lineToSplineHeading(new Pose2d(-35, -10, Math.toRadians(-30)))
-                        .turn(Math.toRadians(55), Math.toRadians(15), Math.toRadians(15))
-                        .lineToSplineHeading(new Pose2d(-59+24-6, -61+7, Math.toRadians(180+14.3)))
-
-                        .lineToSplineHeading(new Pose2d(47,-56, Math.toRadians(90)))
-                        .build());
-
-
-
-
-
+        RoadRunnerBotEntity myBot = redAllianceYellow();
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_INTOTHEDEEP_JUICE_DARK)
-                .setDarkMode(false)
+                .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
                 .addEntity(myBot)
                 .start();
     }
+
+    private static RoadRunnerBotEntity redAllianceYellow()
+    {
+        return new DefaultBotBuilder(meepMeep)
+                .setConstraints(60,60, Math.toRadians(180), Math.toRadians(180), 12.5)
+                .followTrajectorySequence(drive -> drive.trajectorySequenceBuilder(startPos)
+
+                        .splineTo(new Vector2d(samplePos.getX(), samplePos.getY()), Math.toRadians(135))
+                        .turn(Math.toRadians(45), Math.toRadians(360), Math.toRadians(360))
+
+                        .waitSeconds(1.5) // first sample
+                        .splineTo(new Vector2d(-48,-48+12), Math.toRadians(235))
+                        .waitSeconds(1.5)
+                        .setReversed(true)
+                        .splineTo(new Vector2d(samplePos.getX() - 6, samplePos.getY()), Math.toRadians(0))
+                        .setReversed(false)
+
+                        .waitSeconds(1.5) // second sample
+                        .splineTo(new Vector2d(-48,-48+12), Math.toRadians(235))
+                        .waitSeconds(1.5)
+                        .setReversed(true)
+                        .splineTo(new Vector2d(samplePos.getX() - 12, samplePos.getY()), Math.toRadians(0))
+                        .setReversed(false)
+
+                        .waitSeconds(1.5) // third sample
+                        .splineTo(new Vector2d(-48,-48+12), Math.toRadians(235))
+                        .waitSeconds(1.5)
+                        .setReversed(true)
+                        .splineTo(new Vector2d(startPos.getX(), startPos.getY() + 48), Math.toRadians(180-35))
+                        .setReversed(false)
+
+                        .turn(Math.toRadians(70), Math.toRadians(30), Math.toRadians(30))
+                        .waitSeconds(3.5)
+                        .setReversed(true)
+                        .splineTo(new Vector2d(-48,-48+12), Math.toRadians(45))
+                        .waitSeconds(1.5)
+                        .setReversed(false)
+
+                        .setReversed(true)
+                        .splineTo(new Vector2d(startPos.getX() + 24 * 3, startPos.getY()), Math.toRadians(0))
+                        .build());
+    }
+
 }

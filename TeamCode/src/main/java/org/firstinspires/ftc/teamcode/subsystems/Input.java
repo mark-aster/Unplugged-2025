@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Input
 {
-    private static Map<String, Boolean> previousStates = new HashMap<>();
+    private static final Map<String, Boolean> previousStates = new HashMap<>();
 
     public static boolean onKeyDown(String buttonName, boolean currentState)
     {
