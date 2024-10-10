@@ -27,8 +27,11 @@ public class RobotCentricMecanumTeleOpTest extends LinearOpMode {
         // reverse the left side instead.
         // See the note about this earlier on this page.
         //suckdickveryhard
-        frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        Motors.rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
+        Motors.rightRear.setDirection(DcMotorSimple.Direction.FORWARD);
+        Motors.leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        Motors.leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
         waitForStart();
 

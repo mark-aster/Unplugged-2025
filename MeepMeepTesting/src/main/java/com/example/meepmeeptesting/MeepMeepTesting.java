@@ -67,4 +67,13 @@ public class MeepMeepTesting
                         .build());
     }
 
+    private static RoadRunnerBotEntity splineTest()
+    {
+        return new DefaultBotBuilder(meepMeep)
+                .setConstraints(60,60, Math.toRadians(180), Math.toRadians(180), 12.5)
+                .followTrajectorySequence(drive -> drive.trajectorySequenceBuilder(new Pose2d(0,0))
+
+                        .splineTo(new Vector2d(-24-12,-24-12),Math.toRadians(0))
+                        .build());
+    }
 }
