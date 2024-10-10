@@ -36,34 +36,58 @@ public class MeepMeepTesting
 
                         .waitSeconds(1.5) // first sample
                         .splineTo(new Vector2d(-48,-48+12), Math.toRadians(235))
+                        .addTemporalMarker(() -> {
+                            //Pickup Sample
+                        })
                         .waitSeconds(1.5)
                         .setReversed(true)
                         .splineTo(new Vector2d(samplePos.getX() - 6, samplePos.getY()), Math.toRadians(0))
+                        .addTemporalMarker(() -> {
+                            //Leave Sample
+                        })
                         .setReversed(false)
 
                         .waitSeconds(1.5) // second sample
                         .splineTo(new Vector2d(-48,-48+12), Math.toRadians(235))
+                        .addTemporalMarker(() -> {
+                            //Pickup Sample
+                        })
                         .waitSeconds(1.5)
                         .setReversed(true)
                         .splineTo(new Vector2d(samplePos.getX() - 12, samplePos.getY()), Math.toRadians(0))
+                        .addTemporalMarker(() -> {
+                            //Leave Sample
+                        })
                         .setReversed(false)
 
                         .waitSeconds(1.5) // third sample
                         .splineTo(new Vector2d(-48,-48+12), Math.toRadians(235))
+                        .addTemporalMarker(() -> {
+                            //Pickup Sample
+                        })
                         .waitSeconds(1.5)
                         .setReversed(true)
                         .splineTo(new Vector2d(startPos.getX(), startPos.getY() + 48), Math.toRadians(180-35))
+                        .addTemporalMarker(() -> {
+                            //Leave Sample
+                        })
                         .setReversed(false)
 
                         .turn(Math.toRadians(70), Math.toRadians(30), Math.toRadians(30))
+                        .addTemporalMarker(() -> {
+                            //Pickup Sample
+                        })
                         .waitSeconds(3.5)
                         .setReversed(true)
                         .splineTo(new Vector2d(-48,-48+12), Math.toRadians(45))
+                        .addTemporalMarker(() -> {
+                            //Leave Sample
+                        })
                         .waitSeconds(1.5)
                         .setReversed(false)
 
                         .setReversed(true)
-                        .splineTo(new Vector2d(startPos.getX() + 24 * 3, startPos.getY()), Math.toRadians(0))
+                        .splineTo(new Vector2d(startPos.getX() + 24 * 3, startPos.getY()+3), Math.toRadians(0))
                         .build());
     }
 
