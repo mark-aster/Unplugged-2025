@@ -51,7 +51,5 @@ public final class SplineTest extends LinearOpMode {
                         .splineTo(new Vector2d(beginPose.position.x + 24 * 3, beginPose.position.y), Math.toRadians(0))
                         .build()
         );
-
-
     }
 }
