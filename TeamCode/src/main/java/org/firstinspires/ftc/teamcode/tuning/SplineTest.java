@@ -29,7 +29,6 @@ public final class SplineTest extends LinearOpMode {
                         .setReversed(true)
                         .splineTo(new Vector2d(samplePos.position.x - 6, samplePos.position.y), Math.toRadians(0))
 
-
                         .waitSeconds(1.5) // second sample
                         .setReversed(false)
                         .splineTo(new Vector2d(-48,-48+12), Math.toRadians(235))
