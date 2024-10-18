@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.acmerobotics.dashboard.config.Config;
 
-@Config
 public class Constants
 {
     @Config
@@ -24,6 +23,11 @@ public class Constants
     public static class Webcam
     {
         public static double delay = 0;
+    }
+
+    public static class Field
+    {
+        public static final double TILE = 24;
     }
 
 }

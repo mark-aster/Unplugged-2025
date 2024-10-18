@@ -65,6 +65,7 @@ public class ServoConfigTest extends LinearOpMode
         Debug.log("motorIndex", servoIndex);
         Debug.log("motorPosition", servoPosition);
         Debug.log("isCH", isCH);
+        Debug.log("currentServoPosition", (isCH ? servosCH : servosEH)[servoIndex].getPosition());
     }
 
     private void HardwareConfig()
