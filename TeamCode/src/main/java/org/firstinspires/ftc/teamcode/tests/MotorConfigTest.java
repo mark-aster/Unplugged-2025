@@ -28,6 +28,7 @@ public class MotorConfigTest extends LinearOpMode
     public static int motorIndex = 0;
     public static boolean isCH = true;
     public static boolean Apply = false;
+    public static boolean AllSameTime = false;
 
     @Override
     public void runOpMode() throws InterruptedException
@@ -43,7 +44,8 @@ public class MotorConfigTest extends LinearOpMode
         Motors.init(hardwareMap);
 
         motorsArm = new DcMotorEx[]{
-                Motors.armRight
+                Motors.armRight,
+                Motors.armLeft
         };
 
         for(int i = 0; i < 1; i++)
@@ -52,7 +54,6 @@ public class MotorConfigTest extends LinearOpMode
             motorsArm[i].setTargetPosition(0);
             motorsArm[i].setMode(DcMotor.RunMode.RUN_TO_POSITION);
             motorsArm[i].setPower(1);
-
         }
     }
 
@@ -75,10 +76,24 @@ public class MotorConfigTest extends LinearOpMode
         isCH = Input.onKeyDown("start", gamepad1.start) != isCH;
 
         if (Input.onKeyDown("a", gamepad1.a) || Apply) {
-            motorsArm[motorIndex].setTargetPosition(motorIndex == 1 ? -motorPosition : motorPosition);
-            motorsArm[motorIndex].setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorsArm[motorIndex].setPower(1);
-            Apply = false;
+            if(AllSameTime)
+            {
+                for(int i = 0; i < motorsArm.length; i++)
+                {
+                    motorsArm[i].setTargetPosition(i == 1 ? -motorPosition : motorPosition);
+                    motorsArm[i].setPower(1);
+                    motorsArm[i].setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    Apply = false;
+                }
+            }
+            else
+            {
+                motorsArm[motorIndex].setTargetPosition(motorIndex == 1 ? -motorPosition : motorPosition);
+                motorsArm[motorIndex].setPower(1);
+                motorsArm[motorIndex].setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                Apply = false;
+            }
+
         }
 
         Debug.log("motorIndex", motorIndex);
