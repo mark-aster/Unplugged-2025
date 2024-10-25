@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp(name="robotArm", group="Linear OpMode")
-public class robotArm extends LinearOpMode {
+public class RobotArm extends LinearOpMode {
 
     DcMotor elbowMotor1;
     DcMotor elbowMotor2;

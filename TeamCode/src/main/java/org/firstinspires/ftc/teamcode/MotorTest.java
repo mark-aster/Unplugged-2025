@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp(name="Mecanum Drive TeleOp", group="Linear Opmode")
-public class motorTest extends LinearOpMode {
+public class MotorTest extends LinearOpMode {
 
     private DcMotor leftFront;
     private DcMotor rightFront;
@@ -36,12 +36,11 @@ public class motorTest extends LinearOpMode {
             double strafe = gamepad1.left_stick_x;  // stanga/dreapta
             double rotate = gamepad1.right_stick_x; // 360
 
-
-            double leftFrontPower = drive + strafe + rotate;
-            double rightFrontPower = drive - strafe - rotate;
-            double leftBackPower = drive - strafe + rotate;
-            double rightBackPower = drive + strafe - rotate;
-
+            double denominator = Math.max(Math.abs(drive) + Math.abs(strafe) + Math.abs(rotate), 1);
+            double leftFrontPower = (drive + strafe + rotate)/denominator;
+            double rightFrontPower = (drive - strafe - rotate)/denominator;
+            double leftBackPower = (drive - strafe + rotate)/denominator;
+            double rightBackPower = (drive + strafe - rotate)/denominator;
 
             leftFront.setPower(leftFrontPower);
             rightFront.setPower(rightFrontPower);
