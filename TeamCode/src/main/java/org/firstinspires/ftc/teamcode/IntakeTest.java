@@ -6,26 +6,40 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "intakeTest" , group = "Tests")
 public class IntakeTest extends LinearOpMode {
-   Servo servo1;
-   Servo servo2;
+   Servo servoGheara;
+   Servo servoGhearaDreapta;
+   Servo servoRotit;
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("status: " , "initialized");
         telemetry.update();
-        servo1 = hardwareMap.get(Servo.class , "servo1");
-        servo2 = hardwareMap.get(Servo.class , "servo2");
+        servoGheara = hardwareMap.get(Servo.class , "servo1");
+        servoGhearaDreapta = hardwareMap.get(Servo.class , "servo2");
+        servoRotit = hardwareMap.get(Servo.class , "servo3");
+        waitForStart();
+        update();
     }
 
-    public void waitforstart() {
+    public void update() {
 
         while(opModeIsActive()){
-            if(gamepad1.dpad_up) {
-                servo1.setPosition(0.7);
-                servo2.setPosition(0.7);
+            if(gamepad1.b) {
+                servoGheara.setPosition(0.7);
             }
-            if(gamepad1.dpad_down) {
-                servo1.setPosition(0.2);
-                servo2.setPosition(0.2);
+            else {
+                servoGheara.setPosition(0);
+            }
+            if(gamepad1.a) {
+                servoGhearaDreapta.setPosition(0.7);
+            }
+            else {
+                servoGhearaDreapta.setPosition(0);
+            }
+            if (gamepad1.x){
+                servoRotit.setPosition(0.7);
+            }
+            else {
+                servoRotit.setPosition(0);
             }
         }
     }
