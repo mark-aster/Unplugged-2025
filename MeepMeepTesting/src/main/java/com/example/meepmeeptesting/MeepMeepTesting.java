@@ -17,7 +17,7 @@ public class MeepMeepTesting {
                         .turn(Math.toRadians(90))
                         .forward(47)
                         .turn(Math.toRadians(90))
-                        .forward(17)
+                        .forward(13)
                         .turn(Math.toRadians(180))
                         .forward(17)
                         .turn(Math.toRadians(-90))
