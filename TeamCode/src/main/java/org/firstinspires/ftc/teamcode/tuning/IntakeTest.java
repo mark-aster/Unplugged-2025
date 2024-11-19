@@ -80,7 +80,7 @@ public class IntakeTest extends LinearOpMode {
 
 
     private void closeClaw() {
-        clawServo1.setPosition(0.5);  // todo: de optimizat pentru parametri actuali
+        clawServo1.setPosition(0.5);  // todo: de optimizat pentru actual parameters!
         clawServo2.setPosition(0.5);
     }
 
