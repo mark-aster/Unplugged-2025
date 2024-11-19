@@ -96,5 +96,9 @@ public class SensorTest extends LinearOpMode {
 
     }
 
+    public void move() {
+
+    }
+
 
 }
