@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.tests;
 
+import android.transition.Slide;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.ftc.Encoder;
@@ -13,6 +15,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.subsystems.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.Debug;
 import org.firstinspires.ftc.teamcode.subsystems.Input;
 import org.firstinspires.ftc.teamcode.subsystems.hardware.Motors;
@@ -21,14 +24,70 @@ import org.firstinspires.ftc.teamcode.subsystems.hardware.Motors;
 @Config
 public class MotorConfigTest extends LinearOpMode
 {
-    private DcMotorEx[] motorsArm;
+    public static class Drive
+    {
+        public static class LeftFront
+        {
+            public static DcMotorEx Motor = (DcMotorEx) Motors.leftFront;
+            public static int Position = 0;
+            public static float PowerMultiplier = 1;
+        }
 
-    public static int motorPosition = 0;
+        public static class RightFront
+        {
+            public static DcMotorEx Motor = (DcMotorEx) Motors.rightFront;
+            public static int Position = 0;
+            public static float PowerMultiplier = 1;
+        }
 
-    public static int motorIndex = 0;
-    public static boolean isCH = true;
-    public static boolean Apply = false;
-    public static boolean AllSameTime = false;
+        public static class LeftBack
+        {
+            public static DcMotorEx Motor = (DcMotorEx) Motors.leftRear;
+            public static int Position = 0;
+            public static float PowerMultiplier = 1;
+        }
+
+        public static class RightBack
+        {
+            public static DcMotorEx Motor = (DcMotorEx) Motors.rightRear;
+            public static int Position = 0;
+            public static float PowerMultiplier = 1;
+        }
+    }
+
+    public static class Sliders
+    {
+        public static class ArmLeft
+        {
+            public static DcMotorEx Motor = (DcMotorEx) Motors.armLeft;
+            public static int Position = 0;
+            public static float PowerMultiplier = 1;
+        }
+
+        public static class ArmRight
+        {
+            public static DcMotorEx Motor = (DcMotorEx) Motors.armRight;
+            public static int Position = 0;
+            public static float PowerMultiplier = 1;
+        }
+
+        public static class IntakeExtend
+        {
+            public static DcMotorEx Motor = (DcMotorEx) Motors.intakeExtend;
+            public static int Position = 0;
+            public static float PowerMultiplier = 1;
+        }
+
+        public static class IntakeRotate
+        {
+            public static DcMotorEx Motor = (DcMotorEx) Motors.intakeRotate;
+            public static int Position = 0;
+            public static float PowerMultiplier = 1;
+        }
+    }
+
+    public static boolean Apply;
+    public static int MotorID;
 
     @Override
     public void runOpMode() throws InterruptedException
@@ -40,64 +99,42 @@ public class MotorConfigTest extends LinearOpMode
 
     private void Init()
     {
-        Debug.init(telemetry, FtcDashboard.getInstance());
-        Motors.init(hardwareMap);
-
-        motorsArm = new DcMotorEx[]{
-                Motors.armRight,
-                Motors.armLeft
-        };
-
-        for(int i = 0; i < 1; i++)
+        for(int i = 0; i < Motors.allMotors.length; i++)
         {
-            motorsArm[i].setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            motorsArm[i].setTargetPosition(0);
-            motorsArm[i].setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorsArm[i].setPower(1);
+            if(Motors.allMotors[i].equals(null)) continue;
+            Motors.allMotors[i].setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            Motors.allMotors[i].setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
 
     private void Update()
     {
-        motorIndex += (Input.onKeyDown("right_bumper", gamepad1.right_bumper)
-                && motorIndex <= motorsArm.length - 1) ? 1 : 0;
-
-        motorIndex -= (Input.onKeyDown("left_bumper", gamepad1.left_bumper)
-                && motorIndex >= 0) ? 1 : 0;
-
-        int multiplier = (gamepad1.right_trigger > 0.1) ? 100 : (gamepad1.left_trigger > 0.1) ? 10 : 1;
-
-        motorPosition += (Input.onKeyDown("dpad_right",gamepad1.dpad_right)
-                && motorPosition < 1) ? 10 * multiplier : 0;
-
-        motorPosition -= (Input.onKeyDown("dpad_left", gamepad1.dpad_left)
-                && motorPosition > 0) ? 10 * multiplier : 0;
-
-        isCH = Input.onKeyDown("start", gamepad1.start) != isCH;
-
-        if (Input.onKeyDown("a", gamepad1.a) || Apply) {
-            if(AllSameTime)
+        if(Apply)
+        {
+            switch (MotorID)
             {
-                for(int i = 0; i < motorsArm.length; i++)
-                {
-                    motorsArm[i].setTargetPosition(i == 1 ? -motorPosition : motorPosition);
-                    motorsArm[i].setPower(1);
-                    motorsArm[i].setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    Apply = false;
-                }
-            }
-            else
-            {
-                motorsArm[motorIndex].setTargetPosition(motorIndex == 1 ? -motorPosition : motorPosition);
-                motorsArm[motorIndex].setPower(1);
-                motorsArm[motorIndex].setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                Apply = false;
-            }
+                // -- Drive -- //
 
+                case 0: SetMotorPosition(Drive.LeftFront.Motor, Drive.LeftFront.Position, Drive.LeftFront.PowerMultiplier); break;
+                case 1: SetMotorPosition(Drive.RightFront.Motor, Drive.RightFront.Position, Drive.RightFront.PowerMultiplier); break;
+                case 2: SetMotorPosition(Drive.LeftBack.Motor, Drive.LeftBack.Position, Drive.LeftBack.PowerMultiplier); break;
+                case 3: SetMotorPosition(Drive.RightBack.Motor, Drive.RightBack.Position, Drive.RightBack.PowerMultiplier); break;
+
+                // -- Sliders -- //
+
+                case 4: SetMotorPosition(Sliders.ArmLeft.Motor, Sliders.ArmLeft.Position, Sliders.ArmLeft.PowerMultiplier); break;
+                case 5: SetMotorPosition(Sliders.ArmRight.Motor, Sliders.ArmRight.Position, Sliders.ArmRight.PowerMultiplier); break;
+                case 6: SetMotorPosition(Sliders.IntakeExtend.Motor, Sliders.IntakeExtend.Position, Sliders.IntakeExtend.PowerMultiplier); break;
+                case 7: SetMotorPosition(Sliders.IntakeRotate.Motor, Sliders.IntakeRotate.Position, Sliders.IntakeRotate.PowerMultiplier); break;
+            }
+            Apply = false;
         }
+    }
 
-        Debug.log("motorIndex", motorIndex);
-        Debug.log("motorPosition", motorPosition);
-        Debug.log("isCH", isCH);
+    private void SetMotorPosition(DcMotorEx motor, int position, float posMultiplier)
+    {
+        motor.setPower(1);
+        motor.setTargetPosition(position*(int)posMultiplier);
+        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 }
