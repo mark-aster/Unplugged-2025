@@ -23,7 +23,6 @@ public final class RedAllianceRedSample extends LinearOpMode {
 
         Actions.runBlocking(
                 drive.actionBuilder(beginPose)
-
                         .splineToLinearHeading(new Pose2d(beginPose.position.x, beginPose.position.y + TILE/1.5, Math.toRadians(90)), Math.toRadians(90))
                         .waitSeconds(1.5)
                         .setTangent(Math.toRadians(200))

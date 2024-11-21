@@ -42,8 +42,18 @@ public class OpenCV
         });
     }
 
-    public static double getAngle()
+    public static double getBlueAngle()
     {
-        return pipeline.angle;
+        return pipeline.blueAngle;
+    }
+
+    public static double getRedAngle()
+    {
+        return pipeline.redAngle;
+    }
+
+    public static double getYellowAngle()
+    {
+        return pipeline.yellowAngle;
     }
 }

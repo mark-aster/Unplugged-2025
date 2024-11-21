@@ -1,15 +1,17 @@
 package org.firstinspires.ftc.teamcode.tests.teleop;
 
+import static org.firstinspires.ftc.teamcode.subsystems.hardware.Generic.imu;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.subsystems.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.Debug;
+import org.firstinspires.ftc.teamcode.subsystems.Func;
 import org.firstinspires.ftc.teamcode.subsystems.Input;
 import org.firstinspires.ftc.teamcode.subsystems.hardware.Generic;
 import org.firstinspires.ftc.teamcode.subsystems.hardware.Motors;
@@ -19,20 +21,16 @@ import org.firstinspires.ftc.teamcode.subsystems.hardware.Servos;
 @Config
 public class TeleJannikTest extends LinearOpMode
 {
-    boolean robotCentric = true;
+    public static boolean robotCentric = true;
+    public static double speedDivider = 1;
 
     @Override
     public void runOpMode() throws InterruptedException
     {
         Init();
         waitForStart();
-
         if (isStopRequested()) return;
-
-        while (opModeIsActive())
-        {
-            Update();
-        }
+        while (opModeIsActive()) Update();
     }
 
     private void Init()
@@ -41,6 +39,8 @@ public class TeleJannikTest extends LinearOpMode
         Servos.init(hardwareMap);
         Generic.init(hardwareMap);
         Debug.init(telemetry, FtcDashboard.getInstance());
+        Motors.leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        Motors.leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     private void Update()
@@ -53,16 +53,18 @@ public class TeleJannikTest extends LinearOpMode
                 MoveFieldCentric();
 
             UpdateClaw();
-            Arm();
+            UpdateArms();
         }
         catch (Exception ignore) {}
     }
+
+    // -- Drive Train -- //
 
     private void MoveRobotCentric()
     {
         double y = -gamepad1.left_stick_y;
         double x = gamepad1.left_stick_x * 1.1;
-        double rx = -gamepad1.right_stick_x;
+        double rx = gamepad1.right_stick_x;
 
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
         double frontLeftPower = (y + x + rx) / denominator;
@@ -70,10 +72,10 @@ public class TeleJannikTest extends LinearOpMode
         double frontRightPower = (y - x - rx) / denominator;
         double backRightPower = (y + x - rx) / denominator;
 
-        Motors.leftFront.setPower(frontLeftPower);
-        Motors.leftRear.setPower(backLeftPower);
-        Motors.rightFront.setPower(frontRightPower);
-        Motors.rightRear.setPower(backRightPower);
+        Motors.leftFront.setPower(frontLeftPower/speedDivider);
+        Motors.leftRear.setPower(backLeftPower/speedDivider);
+        Motors.rightFront.setPower(frontRightPower/speedDivider);
+        Motors.rightRear.setPower(backRightPower/speedDivider);
 
         Debug.log("motor left front", Motors.leftFront.getPower());
         Debug.log("motor right front", Motors.rightFront.getPower());
@@ -83,17 +85,28 @@ public class TeleJannikTest extends LinearOpMode
 
     private void MoveFieldCentric()
     {
-        double y = -gamepad1.left_stick_y;
+        double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
         double x = gamepad1.left_stick_x;
         double rx = gamepad1.right_stick_x;
 
-        double botHeading = Generic.imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        // This button choice was made so that it is hard to hit on accident,
+        // it can be freely changed based on preference.
+        // The equivalent button is start on Xbox-style controllers.
+        if (gamepad1.options) {
+            imu.resetYaw();
+        }
 
+        double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+
+        // Rotate the movement direction counter to the bot's rotation
         double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
         double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
 
-        rotX = rotX * 1.1;
+        rotX = rotX * 1.1;  // Counteract imperfect strafing
 
+        // Denominator is the largest motor power (absolute value) or 1
+        // This ensures all the powers maintain the same ratio,
+        // but only if at least one is out of the range [-1, 1]
         double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
         double frontLeftPower = (rotY + rotX + rx) / denominator;
         double backLeftPower = (rotY - rotX + rx) / denominator;
@@ -107,6 +120,8 @@ public class TeleJannikTest extends LinearOpMode
     }
 
     private boolean isClawOpened = false;
+
+    // -- Claws -- //
 
     private void UpdateClaw()
     {
@@ -153,8 +168,51 @@ public class TeleJannikTest extends LinearOpMode
         }
     }
 
-    private void Arm()
-    {
+    // -- Arms -- //
 
+    private void UpdateArms()
+    {
+        HandleArmVertical();
+        HandleArmHorizontal();
+    }
+
+    private void HandleArmVertical()
+    {
+        int height = 0;
+        if(gamepad1.right_stick_y > 0.01 && height <= Constants.VerticalViper.maxPosition)
+        {
+            height += (int) (10 * Func.deltaTime());
+        }
+        if(gamepad1.right_stick_y < -0.01 && height >= Constants.VerticalViper.minPosition)
+        {
+            height -= (int) (10 * Func.deltaTime());
+        }
+        ChangeVerticalArmHeight(height);
+    }
+
+    private void ChangeVerticalArmHeight(int height)
+    {
+        Func.SetPosition(Motors.armLeft, height);
+        Func.SetPosition(Motors.armRight, height);
+    }
+
+    private void HandleArmHorizontal()
+    {
+        int height = 0;
+        if(gamepad1.right_stick_x > 0.01 && height <= Constants.VerticalViper.maxPosition)
+        {
+            height += (int) (10 * Func.deltaTime());
+        }
+        if(gamepad1.right_stick_x < -0.01 && height >= Constants.VerticalViper.minPosition)
+        {
+            height -= (int) (10 * Func.deltaTime());
+        }
+        ChangeHorizontalArmHeight(height);
+    }
+
+    private void ChangeHorizontalArmHeight(int height)
+    {
+        Func.SetPosition(Motors.intakeArmLeft, height);
+        Func.SetPosition(Motors.intakeArmRight, height);
     }
 }
