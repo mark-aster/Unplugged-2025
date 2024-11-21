@@ -16,7 +16,7 @@ public class Motors
     public static DcMotor intakeExtend;
     public static DcMotor intakeRotate;
 
-    public static DcMotor[] allMotors;
+    public static DcMotor[] allMotors = new DcMotor[8];
 
     public static void Init(HardwareMap hardwareMap) {
         try
@@ -61,17 +61,16 @@ public class Motors
         rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
-    private static void SetAllMotors()
-    {
-        allMotors[0] = leftFront;
-        allMotors[1] = rightFront;
-        allMotors[2] = leftRear;
-        allMotors[3] = rightRear;
+    private static void SetAllMotors() {
+        DcMotor[] motors = {leftFront, rightFront, leftRear, rightRear, armLeft, armRight, intakeExtend, intakeRotate};
 
-        allMotors[4] = armLeft;
-        allMotors[5] = armRight;
-        allMotors[6] = intakeExtend;
-        allMotors[7] = intakeRotate;
+        for (int i = 0; i < motors.length; i++) {
+            if (motors[i] != null) {
+                allMotors[i] = motors[i];
+            } else {
+                allMotors[i] = null;
+            }
+        }
     }
 
 }

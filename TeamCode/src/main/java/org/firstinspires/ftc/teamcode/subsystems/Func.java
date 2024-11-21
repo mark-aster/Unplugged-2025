@@ -7,12 +7,18 @@ public class Func
 {
     public static double lastTime;
 
-    public static void SetPosition(DcMotorEx motor, int position)
+    public static void SetMotorPosition(DcMotorEx motor, int position, float posMultiplier)
     {
-        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor.setPower(1);
+        motor.setTargetPosition(position*(int)posMultiplier);
+        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public static void SetMotorPosition(DcMotorEx motor, int position)
+    {
+        motor.setPower(1);
         motor.setTargetPosition(position);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor.setPower(1);
     }
 
     public static double deltaTime() {

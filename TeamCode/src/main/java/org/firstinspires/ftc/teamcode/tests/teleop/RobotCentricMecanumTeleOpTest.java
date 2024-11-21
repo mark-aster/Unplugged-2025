@@ -5,10 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.teamcode.subsystems.Constants;
-import org.firstinspires.ftc.teamcode.subsystems.Input;
 import org.firstinspires.ftc.teamcode.subsystems.hardware.Motors;
-import org.firstinspires.ftc.teamcode.subsystems.hardware.Servos;
 
 @TeleOp(group = "TeleopTests")
 public class RobotCentricMecanumTeleOpTest extends LinearOpMode {
@@ -16,7 +13,7 @@ public class RobotCentricMecanumTeleOpTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         // Declare our motors
         // Make sure your ID's match your configuration
-        Motors.init(hardwareMap);
+        Motors.Init(hardwareMap);
         DcMotor frontLeftMotor = Motors.leftFront;
         DcMotor backLeftMotor = Motors.leftRear;
         DcMotor frontRightMotor = Motors.rightFront;

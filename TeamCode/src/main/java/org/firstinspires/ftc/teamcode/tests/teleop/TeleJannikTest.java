@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -35,7 +36,7 @@ public class TeleJannikTest extends LinearOpMode
 
     private void Init()
     {
-        Motors.init(hardwareMap);
+        Motors.Init(hardwareMap);
         Servos.init(hardwareMap);
         Generic.init(hardwareMap);
         Debug.init(telemetry, FtcDashboard.getInstance());
@@ -192,8 +193,8 @@ public class TeleJannikTest extends LinearOpMode
 
     private void ChangeVerticalArmHeight(int height)
     {
-        Func.SetPosition(Motors.armLeft, height);
-        Func.SetPosition(Motors.armRight, height);
+        Func.SetMotorPosition((DcMotorEx) Motors.armLeft, height);
+        Func.SetMotorPosition((DcMotorEx) Motors.armRight, height);
     }
 
     private void HandleArmHorizontal()
@@ -212,7 +213,7 @@ public class TeleJannikTest extends LinearOpMode
 
     private void ChangeHorizontalArmHeight(int height)
     {
-        Func.SetPosition(Motors.intakeArmLeft, height);
-        Func.SetPosition(Motors.intakeArmRight, height);
+        Func.SetMotorPosition((DcMotorEx) Motors.armLeft, height);
+        Func.SetMotorPosition((DcMotorEx) Motors.armRight, height);
     }
 }

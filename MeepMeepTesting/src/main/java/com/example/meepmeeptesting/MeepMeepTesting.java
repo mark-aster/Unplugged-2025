@@ -123,6 +123,51 @@ public class MeepMeepTesting
                 );
     }
 
+    private static RoadRunnerBotEntity redAllianceYellowNewNew()
+    {
+        return new DefaultBotBuilder(meepMeep)
+                .setConstraints(60,60, Math.toRadians(180), Math.toRadians(180), 12.5)
+                .followTrajectorySequence(drive -> drive.trajectorySequenceBuilder(beginPoseYellow)
+
+                        .waitSeconds(1.5)
+                        .splineToLinearHeading(new Pose2d(samplePosYellow.getX(), samplePosYellow.getY(), Math.toRadians(180)), Math.toRadians(90))
+
+                        .addTemporalMarker(() -> {})
+                        .waitSeconds(1.5) // first sample
+                        .setTangent(Math.toRadians(225))
+                        .splineToLinearHeading(new Pose2d(-2 * TILE,-2 * TILE + TILE / 2, Math.toRadians(235)), Math.toRadians(225))
+                        .waitSeconds(1.5)
+                        .setTangent(Math.toRadians(45))
+                        .splineToLinearHeading(new Pose2d(samplePosYellow.getX() - TILE / 4, samplePosYellow.getY(), Math.toRadians(180)), Math.toRadians(45))
+
+                        .addTemporalMarker(() -> {})
+                        .waitSeconds(1.5) // second sample
+                        .setTangent(Math.toRadians(225))
+                        .splineToLinearHeading(new Pose2d(-2 * TILE,-2 * TILE + TILE / 2, Math.toRadians(235)), Math.toRadians(225))
+                        .waitSeconds(1.5)
+                        .setTangent(Math.toRadians(90))
+                        .splineToLinearHeading(new Pose2d(samplePosYellow.getX() - TILE / 2 , samplePosYellow.getY(), Math.toRadians(180)), Math.toRadians(90))
+
+                        .addTemporalMarker(() -> {})
+                        .waitSeconds(1.5) // third sample
+                        .setTangent(Math.toRadians(270))
+                        .splineToLinearHeading(new Pose2d(-2 * TILE,-2 * TILE + TILE / 2, Math.toRadians(235)), Math.toRadians(270))
+
+                        .addTemporalMarker(() -> {})
+                        .waitSeconds(1.5) // fourth sample
+                        .setTangent(Math.toRadians(45))
+                        .splineToLinearHeading(new Pose2d(beginPoseYellow.getX()+TILE/3, beginPoseYellow.getY() + 2 * TILE + TILE/6, Math.toRadians(0)), Math.toRadians(45))
+                        .waitSeconds(3.5)
+                        .setTangent(Math.toRadians(245))
+                        .splineToLinearHeading(new Pose2d(-2 * TILE,-2 * TILE + TILE / 2, Math.toRadians(235)), Math.toRadians(245))
+                        .waitSeconds(1.5)
+                        .setTangent(Math.toRadians(45))
+                        .splineToLinearHeading(new Pose2d(beginPoseYellow.getX()+TILE/3, beginPoseYellow.getY() + 2 * TILE + TILE/6, Math.toRadians(0)), Math.toRadians(45))
+                        .waitSeconds(1.5)
+                        .build()
+                );
+    }
+
     private static RoadRunnerBotEntity redAllianceRed()
     {
         return new DefaultBotBuilder(meepMeep)

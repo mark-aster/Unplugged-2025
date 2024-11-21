@@ -5,10 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.subsystems.Debug;
 import org.firstinspires.ftc.teamcode.subsystems.hardware.Motors;
@@ -19,7 +17,7 @@ public class FieldCentricMecanumTeleOpTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         // Declare our motors
         // Make sure your ID's match your configuration
-        Motors.init(hardwareMap);
+        Motors.Init(hardwareMap);
         Debug.init(telemetry, FtcDashboard.getInstance());
         DcMotor frontLeftMotor = Motors.leftFront;
         DcMotor backLeftMotor = Motors.leftRear;
