@@ -19,7 +19,7 @@ public class Servos
     public static void init(HardwareMap hardwareMap) {
         try
         {
-            intakeVertical = hardwareMap.get(Servo.class, "Vertical");
+            intakeVertical = hardwareMap.get(Servo.class, "CH0");
             intakeHorizontal = hardwareMap.get(Servo.class, "Horizontal");
             rightClaw = hardwareMap.get(Servo.class, "rightClaw");
             leftClaw = hardwareMap.get(Servo.class, "leftClaw");

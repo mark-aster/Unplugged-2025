@@ -6,9 +6,12 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.subsystems.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.Debug;
@@ -42,6 +45,7 @@ public class TeleJannikTest extends LinearOpMode
         Debug.init(telemetry, FtcDashboard.getInstance());
         Motors.leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         Motors.leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
+        Motors.intakeRotate.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     private void Update()
@@ -53,8 +57,9 @@ public class TeleJannikTest extends LinearOpMode
             else
                 MoveFieldCentric();
 
-            UpdateClaw();
-            UpdateArms();
+            //UpdateClaw();
+            //UpdateArms();
+            UpdateIntake();
         }
         catch (Exception ignore) {}
     }
@@ -215,5 +220,43 @@ public class TeleJannikTest extends LinearOpMode
     {
         Func.SetMotorPosition((DcMotorEx) Motors.armLeft, height);
         Func.SetMotorPosition((DcMotorEx) Motors.armRight, height);
+    }
+
+    // -- Intake -- //
+
+    private void UpdateIntake()
+    {
+        HandleIntakeExtension();
+        HandleIntakeRotation();
+        Debug.log("rotate Position", rotatePos);
+        Debug.log("extend Position", extendPos);
+    }
+
+    int rotatePos = 0;
+    private int extendPos = 0;
+
+    private int AdjustPosition(int currentPosition, float input, int min, int max, int speed) {
+        currentPosition += (int) (Func.deltaTime() * speed * input);
+        return Math.max(min, Math.min(currentPosition, max));
+    }
+
+    private void HandleIntakeRotation() {
+        rotatePos = AdjustPosition(rotatePos,
+                gamepad2.left_stick_y,
+                Constants.IntakeVipers.minPositionRotate,
+                Constants.IntakeVipers.maxPositionRotate,
+                1);
+
+        Func.SetMotorPosition((DcMotorEx) Motors.intakeRotate, rotatePos);
+    }
+
+    private void HandleIntakeExtension() {
+        extendPos = AdjustPosition(extendPos,
+                gamepad2.right_stick_y,
+                Constants.IntakeVipers.minPositionExtend,
+                Constants.IntakeVipers.maxPositionExtend,
+                1);
+
+        Func.SetMotorPosition((DcMotorEx) Motors.intakeExtend, extendPos);
     }
 }

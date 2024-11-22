@@ -7,8 +7,11 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.teamcode.subsystems.Func;
 import org.firstinspires.ftc.teamcode.subsystems.hardware.Motors;
+import org.firstinspires.ftc.teamcode.subsystems.hardware.Servos;
 
 @TeleOp(name = "MotorConfigTest", group = "Tests")
 @Config
@@ -52,7 +55,10 @@ public final class MotorConfigTest extends LinearOpMode
 
     private void Init()
     {
+        Servos.init(hardwareMap);
         Motors.Init(hardwareMap);
+
+        Motors.intakeRotate.setDirection(DcMotorSimple.Direction.REVERSE);
 
         for(int i = 0; i < Motors.allMotors.length; i++)
         {
@@ -64,8 +70,10 @@ public final class MotorConfigTest extends LinearOpMode
 
     private void Update()
     {
+        TestRotationPerp();
         if(Apply)
         {
+
             switch (MotorID)
             {
                 // -- Drive -- //
@@ -85,6 +93,12 @@ public final class MotorConfigTest extends LinearOpMode
             Apply = false;
         }
     }
+
+    private void TestRotationPerp()
+    {
+
+    }
+
 
 
 }

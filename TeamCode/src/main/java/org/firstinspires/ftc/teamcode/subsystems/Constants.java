@@ -23,8 +23,18 @@ public class Constants
     @Config
     public static class VerticalViper
     {
-        public static long maxPosition = 9000;
-        public static long minPosition = 0;
+        public static int maxPosition = 9000;
+        public static int minPosition = 0;
+    }
+
+    @Config
+    public static class IntakeVipers
+    {
+        public static int maxPositionRotate = 2500;
+        public static int minPositionRotate = 0;
+
+        public static int maxPositionExtend = 700;
+        public static int minPositionExtend = 0;
     }
 
     @Config
