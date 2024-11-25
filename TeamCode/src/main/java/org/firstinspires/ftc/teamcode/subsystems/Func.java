@@ -8,10 +8,10 @@ public class Func
 {
     public static double lastTime;
 
-    public static void SetMotorPosition(DcMotorEx motor, int position, float posMultiplier)
+    public static void SetMotorPosition(DcMotorEx motor, int position, double power)
     {
-        motor.setPower(1);
-        motor.setTargetPosition(position*(int)posMultiplier);
+        motor.setPower(power);
+        motor.setTargetPosition(position);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 

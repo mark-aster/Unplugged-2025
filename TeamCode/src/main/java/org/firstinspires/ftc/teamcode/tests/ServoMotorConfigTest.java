@@ -101,22 +101,7 @@ public final class ServoMotorConfigTest extends LinearOpMode {
                 case 6: SetMotorPosition((DcMotorEx) Motors.intakeExtend, M_Sliders._6_IntakeExtendPosition); break;
                 case 7: SetMotorPosition((DcMotorEx) Motors.intakeRotate, M_Sliders._7_IntakeRotatePosition); break;
             }
-            apply = false;
-        }
 
-        // Servo control
-        servoIndex += (Input.onKeyDown("right_bumper", gamepad1.right_bumper) && servoIndex < SERVO_PIN_COUNT - 1) ? 1 : 0;
-        servoIndex -= (Input.onKeyDown("left_bumper", gamepad1.left_bumper) && servoIndex > 0) ? 1 : 0;
-
-        multiplier = (gamepad1.right_trigger > 0.1) ? 100 : (gamepad1.left_trigger > 0.1) ? 10 : 1;
-
-        servoPosition += (Input.onKeyDown("dpad_right", gamepad1.dpad_right) && servoPosition < 1) ? 0.001 * multiplier : 0;
-        servoPosition -= (Input.onKeyDown("dpad_left", gamepad1.dpad_left) && servoPosition > 0) ? 0.001 * multiplier : 0;
-
-        isCH = Input.onKeyDown("start", gamepad1.start) != isCH;
-
-        if (Input.onKeyDown("a", gamepad1.a) || apply) {
-            (isCH ? servosCH : servosEH)[servoIndex].setPosition(servoPosition);
             apply = false;
         }
 
@@ -126,4 +111,5 @@ public final class ServoMotorConfigTest extends LinearOpMode {
         Debug.log("isCH", isCH);
         Debug.log("currentServoPosition", (isCH ? servosCH : servosEH)[servoIndex].getPosition());
     }
+
 }
