@@ -16,7 +16,7 @@ public class IntakeTest extends LinearOpMode {
     private ColorSensor colorSensor;
 
 
-    @Override
+
     public void runOpMode() {
         clawServo1 = hardwareMap.get(Servo.class, "claw1");
         clawServo2 = hardwareMap.get(Servo.class, "claw2");
