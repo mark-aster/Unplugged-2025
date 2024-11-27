@@ -306,7 +306,7 @@ public class MeepMeepTesting
     {
         return new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeRedDark())
-                .setConstraints(60,60, Math.toRadians(180), Math.toRadians(180), 12.5)
+                .setConstraints(70,70, Math.toRadians(180), Math.toRadians(180), 12.5)
                 .followTrajectorySequence(drive -> drive.trajectorySequenceBuilder(beginPoseRed)
 
 
