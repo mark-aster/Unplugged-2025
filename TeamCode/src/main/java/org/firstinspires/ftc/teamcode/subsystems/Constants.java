@@ -18,6 +18,9 @@ public class Constants
         public static double rightClawClosed = 0.55;
         public static double leftClawOpen = 0.7; //TODO
         public static double leftClawClosed = 0.75;
+
+        //0.6 OPEN
+        //0.47 CLOSED
     }
 
     @Config
