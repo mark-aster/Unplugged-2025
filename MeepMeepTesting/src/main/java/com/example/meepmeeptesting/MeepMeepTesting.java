@@ -17,31 +17,31 @@ public class MeepMeepTesting {
                 .followTrajectorySequence(drive -> drive.trajectorySequenceBuilder(new Pose2d(-12, 58, -1.57079633))
                         .forward(22)
                         .waitSeconds(1)
-                        .setTangent(Math.toRadians(210))
-                        .splineToLinearHeading(new Pose2d(-44.9 , 22.6, Math.PI / 2),Math.toRadians(90))
+                        .setTangent(Math.toRadians(180))
+                        .splineToLinearHeading(new Pose2d(-44.9 , 22.6, Math.PI / 2),Math.toRadians(340))
                         .forward(30)
+                        .setTangent(Math.toRadians(180))
+                        .splineToLinearHeading(new Pose2d(-46.5, 14.5 , Math.PI / 2) , Math.toRadians(90))
+                        .forward(40)
                         .setTangent(Math.toRadians(90))
-                        .splineToLinearHeading(new Pose2d(-49.1, 11.1 , Math.PI / 2) , Math.toRadians(90))
+                        .splineToLinearHeading(new Pose2d(-61.2 , 10.7 , Math.PI / 2) , Math.toRadians(210))
                         .forward(40)
-                        .setTangent(90)
-                        .splineToLinearHeading(new Pose2d(-61.2 , 10.7 , Math.PI / 2) , Math.toRadians(90))
-                        .forward(40)
-                        .setTangent(210)
-                        .splineToLinearHeading(new Pose2d(5.0 , 34.2 , Math.PI / 2) , Math.toRadians(180))
+                        .setTangent(Math.toRadians(0))
+                        .splineToLinearHeading(new Pose2d(5.0 , 34.2 , Math.PI / 2) , Math.toRadians(180)) // first turn
                         .waitSeconds(0.75)
-                        .setTangent(210)
-                        .splineToLinearHeading(new Pose2d(-63.2 , 55.6 , Math.PI / 2) , Math.toRadians(180))
+                        .setTangent(Math.toRadians(180))
+                        .splineToLinearHeading(new Pose2d(-58.8 , 54.4 , Math.PI / 2) , Math.toRadians(180)) // first back
                         .waitSeconds(0.75)
-                        .setTangent(210)
-                        .splineToLinearHeading(new Pose2d(5.0 , 34.2 , Math.PI / 2) , Math.toRadians(180))
+                        .setTangent(Math.toRadians(0))
+                        .splineToLinearHeading(new Pose2d(5.0 , 34.2 , Math.PI / 2) , Math.toRadians(180)) // second turn
                         .waitSeconds(0.7)
-                        .setTangent(210)
-                        .splineToLinearHeading(new Pose2d(-61.2 , 55.6 , Math.PI / 2) , Math.toRadians(180))
+                        .setTangent(Math.toRadians(180))
+                        .splineToLinearHeading(new Pose2d(-58.8 , 54.4 , Math.PI / 2) , Math.toRadians(180)) // second back
                         .waitSeconds(0.7)
-                        .setTangent(210)
-                        .splineToLinearHeading(new Pose2d(5.0 , 34.2 , Math.PI / 2) , Math.toRadians(180))
-                        .setTangent(210)
-                        .splineToLinearHeading(new Pose2d(-63.7 , 65.3 , Math.PI / 2) , Math.toRadians(180))
+                        .setTangent(Math.toRadians(0))
+                        .splineToLinearHeading(new Pose2d(5.0 , 34.2 , Math.PI / 2) , Math.toRadians(180)) // third turn
+                        .setTangent(Math.toRadians(180))
+                        .splineToLinearHeading(new Pose2d(-58.8 , 54.4 , Math.PI / 2) , Math.toRadians(180)) // third back
                         .build());
 
 
