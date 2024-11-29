@@ -16,15 +16,17 @@ public class MeepMeepTesting {
                 .followTrajectorySequence(drive -> drive.trajectorySequenceBuilder(new Pose2d(-12, 58, -1.57079633))
                         .strafeRight(20)
                         .setTangent(Math.toRadians(210))
-                        .splineToLinearHeading(new Pose2d(-43.3 , 4.6,  Math.toRadians(90)),Math.toRadians(145))
+                        .splineToLinearHeading(new Pose2d(-43.3 , 4.6,  Math.toRadians(90)),Math.toRadians(145)) // 1
                         .setTangent(90)
-                        .splineToLinearHeading(new Pose2d(-48.5 , 52.1 , Math.toRadians(90)) , Math.toRadians(180)) //UP
+                        .splineToLinearHeading(new Pose2d(-48.5 , 52.1 , Math.toRadians(90)) , Math.toRadians(180)) //2
                         .setTangent(Math.toRadians(0))
-                        .splineToLinearHeading(new Pose2d(-50.2, 14.1 , Math.PI / 2) , Math.toRadians(150)) // Down
+                        .splineToLinearHeading(new Pose2d(-50.2, 14.1 , Math.PI / 2) , Math.toRadians(150)) // 3
                         .setTangent(Math.toRadians(90))
-                        .splineToLinearHeading(new Pose2d(-54.2 , 52.6 , Math.PI / 2) , Math.toRadians(180)) // UP 2
-                        .setTangent(Math.toRadians(150))
-                        .splineToLinearHeading(new Pose2d(-58.6 , 16.3 , Math.toRadians(90)) , Math.toRadians(0))
+                        .splineToLinearHeading(new Pose2d(-58.3 , 52.6 , Math.PI / 2) , Math.toRadians(90)) // 4
+                        .setTangent(Math.toRadians(90))
+                        .splineToLinearHeading(new Pose2d(-58.4 , 15.7 , Math.toRadians(90)) , Math.toRadians(90)) // 5
+                        .setTangent(80)
+                        .splineToLinearHeading(new Pose2d(-58.3 , 52.6 , Math.PI / 2) , Math.toRadians(90)) // 6
                         .setTangent(Math.toRadians(0))
                         .splineToLinearHeading(new Pose2d(-57.2 , 58.2 , Math.PI / 2) , Math.toRadians(0)) // First lap
                         .waitSeconds(1.5)
@@ -39,6 +41,7 @@ public class MeepMeepTesting {
                         .waitSeconds(0.8)
                         .setTangent(Math.toRadians(180))
                         .splineToLinearHeading(new Pose2d(-57.2 , 58.2 , Math.PI / 2) , Math.toRadians(180)) // Third back
+                        .setTangent(Math.toRadians(0))
                         .build());
 
 
