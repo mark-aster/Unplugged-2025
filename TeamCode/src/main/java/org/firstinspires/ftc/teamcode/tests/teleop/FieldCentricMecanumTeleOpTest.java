@@ -17,7 +17,7 @@ public class FieldCentricMecanumTeleOpTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         // Declare our motors
         // Make sure your ID's match your configuration
-        Motors.Init(hardwareMap);
+        Motors.init(hardwareMap);
         Debug.init(telemetry, FtcDashboard.getInstance());
         DcMotor frontLeftMotor = Motors.leftFront;
         DcMotor backLeftMotor = Motors.leftRear;

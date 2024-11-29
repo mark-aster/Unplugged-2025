@@ -12,8 +12,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.subsystems.Debug;
-import org.firstinspires.ftc.teamcode.subsystems.Func;
-import org.firstinspires.ftc.teamcode.subsystems.Input;
 import org.firstinspires.ftc.teamcode.subsystems.hardware.Motors;
 import org.firstinspires.ftc.teamcode.subsystems.hardware.Servos;
 
@@ -64,7 +62,7 @@ public final class ServoMotorConfigTest extends LinearOpMode {
     private void initHardware() {
         // Initialize hardware
         Servos.init(hardwareMap);
-        Motors.Init(hardwareMap);
+        Motors.init(hardwareMap);
 
         // Set motor directions
         Motors.intakeRotate.setDirection(DcMotorSimple.Direction.REVERSE);

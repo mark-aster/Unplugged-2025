@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.Servo;
 
 public class Func
 {
@@ -27,6 +26,11 @@ public class Func
         double deltaTime = (currentTime - lastTime) / 1e9;
         lastTime = currentTime;
         return deltaTime;
+    }
+
+    public static int adjustPosition(int currentPosition, double input, int min, int max, double ticksPerSecond) {
+        currentPosition += (int) (Func.deltaTime() * ticksPerSecond * input);
+        return Math.max(min, Math.min(currentPosition, max));
     }
 
     public static double map(double x, double a, double b, double c, double d)

@@ -21,7 +21,7 @@ public class ArmParallel extends LinearOpMode
     public void runOpMode() throws InterruptedException
     {
         Servos.init(hardwareMap);
-        Motors.Init(hardwareMap);
+        Motors.init(hardwareMap);
         Motors.intakeRotate.setDirection(DcMotorSimple.Direction.REVERSE);
         waitForStart();
         while (opModeIsActive())

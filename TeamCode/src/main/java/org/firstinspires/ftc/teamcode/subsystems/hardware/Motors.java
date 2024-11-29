@@ -18,18 +18,18 @@ public class Motors
 
     public static DcMotor[] allMotors = new DcMotor[8];
 
-    public static void Init(HardwareMap hardwareMap) {
+    public static void init(HardwareMap hardwareMap) {
         try
         {
-            GetMotors(hardwareMap);
-            SetZeroPowerBehaviour();
+            getMotors(hardwareMap);
+            setZeroPowerBehaviour();
             SetDirection();
             SetAllMotors();
         }
         catch (Exception ignored) {}
     }
 
-    private static void GetMotors(HardwareMap hardwareMap)
+    private static void getMotors(HardwareMap hardwareMap)
     {
         leftFront = hardwareMap.tryGet(DcMotor.class, "leftFront");
         leftRear = hardwareMap.tryGet(DcMotor.class, "leftBack");
@@ -42,7 +42,7 @@ public class Motors
         intakeRotate = hardwareMap.tryGet(DcMotor.class, "intakeRotate");
     }
 
-    private static void SetZeroPowerBehaviour()
+    private static void setZeroPowerBehaviour()
     {
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.tuning;
 
-import static org.firstinspires.ftc.teamcode.subsystems.Constants.Field.TILE;
+import static org.firstinspires.ftc.teamcode.subsystems.CONSTANTS.FIELD.TILE;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
