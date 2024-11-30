@@ -47,7 +47,7 @@ public class ArmParallel extends LinearOpMode
         }
 
         Func.SetMotorPosition((DcMotorEx) Motors.intakeRotate, position, 0.2);
-        Servos.intakeVertical.setPosition(servoParallel());
+        //Servos.intakeVertical.setPosition(servoParallel());
     }
 
     private double servoParallel()

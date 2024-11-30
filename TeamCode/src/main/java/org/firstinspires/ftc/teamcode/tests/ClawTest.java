@@ -21,8 +21,8 @@ public class ClawTest extends LinearOpMode
         {
             if(Input.onKeyDown("a", gamepad1.a))
             {
-                Servos.rightClaw.setPosition(opened ? 1 : 0);
-                Servos.leftClaw.setPosition(opened ? 0 : 1);
+                //Servos.rightClaw.setPosition(opened ? 1 : 0);
+                //Servos.leftClaw.setPosition(opened ? 0 : 1);
                 opened = !opened;
             }
         }

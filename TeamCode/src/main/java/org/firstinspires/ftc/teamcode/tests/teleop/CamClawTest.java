@@ -26,7 +26,7 @@ public class CamClawTest extends LinearOpMode
     private void rotateClaw(double angle)
     {
         double newAngle = map(angle, 0, 180, 1, 0);
-        Servos.intakeHorizontal.setPosition(newAngle);
+        //Servos.intakeHorizontal.setPosition(newAngle);
         telemetry.addData("Angle", angle);
         telemetry.update();
     }

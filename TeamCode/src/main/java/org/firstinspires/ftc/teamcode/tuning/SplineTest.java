@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.PinpointDrive;
 
 public final class SplineTest extends LinearOpMode {
     @Override
@@ -16,7 +17,7 @@ public final class SplineTest extends LinearOpMode {
 
         Pose2d beginPoseRed = new Pose2d(2 * TILE,-2.5 * TILE, Math.toRadians(90));
 
-        MecanumDrive drive = new MecanumDrive(hardwareMap, beginPoseRed);
+        PinpointDrive drive = new PinpointDrive(hardwareMap, beginPoseRed);
 
         waitForStart();
 
