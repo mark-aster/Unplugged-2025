@@ -23,8 +23,8 @@ public class Motors
         {
             getMotors(hardwareMap);
             setZeroPowerBehaviour();
-            SetDirection();
-            SetAllMotors();
+            setDirection();
+            setAllMotors();
         }
         catch (Exception ignored) {}
     }
@@ -55,13 +55,13 @@ public class Motors
         intakeRotate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
-    private static void SetDirection()
+    private static void setDirection()
     {
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
-    private static void SetAllMotors() {
+    private static void setAllMotors() {
         DcMotor[] motors = {leftFront, rightFront, leftRear, rightRear, armLeft, armRight, intakeExtend, intakeRotate};
 
         for (int i = 0; i < motors.length; i++) {

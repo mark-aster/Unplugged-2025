@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.Input;
 
 @TeleOp(name = "RoadrunnerTeleOpTest", group = "TeleopTests")
-public class DrivingTest extends LinearOpMode
+public class RoadrunnerTeleOpTest extends LinearOpMode
 {
     MecanumDrive drive;
 
@@ -18,11 +18,7 @@ public class DrivingTest extends LinearOpMode
 
     boolean slow = false;
     byte slowMultiplier = 3;
-//markesteunfrumossiundragut
-    //kiss
-    //luv
-    //tepupajannik
-    //<3
+
         @Override
     public void runOpMode() throws InterruptedException
     {

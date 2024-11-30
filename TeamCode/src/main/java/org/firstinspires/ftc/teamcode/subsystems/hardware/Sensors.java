@@ -1,26 +1,32 @@
 package org.firstinspires.ftc.teamcode.subsystems.hardware;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
-public class Generic
+import org.firstinspires.ftc.teamcode.subsystems.Constants;
+import org.firstinspires.ftc.teamcode.subsystems.GoBildaPinpointDriver;
+
+public class Sensors
 {
-    public static DistanceSensor sensor1;
     public static IMU imu;
+    public static GoBildaPinpointDriver odo;
 
     public static void init(HardwareMap hardwareMap)
     {
         try
         {
-            IMU imu = hardwareMap.get(IMU.class, "imu");
+            imu = hardwareMap.get(IMU.class, "imu");
             IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                     RevHubOrientationOnRobot.LogoFacingDirection.UP,
                     RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
             imu.initialize(parameters);
 
-            sensor1 = hardwareMap.tryGet(DistanceSensor.class, "sensor1");
+            odo = hardwareMap.get(GoBildaPinpointDriver.class,"odo");
+            odo.setOffsets(Constants.ODOMETRY_COMPUTER.X_OFFSET, Constants.ODOMETRY_COMPUTER.Y_OFFSET);
+            odo.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+            odo.resetPosAndIMU();
+
         }
         catch (Exception ignore) {}
     }

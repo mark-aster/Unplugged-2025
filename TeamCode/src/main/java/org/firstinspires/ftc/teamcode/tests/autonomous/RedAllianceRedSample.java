@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.tests.autonomous;
 
-import static org.firstinspires.ftc.teamcode.subsystems.CONSTANTS.FIELD.TILE;
+import static org.firstinspires.ftc.teamcode.subsystems.Constants.FIELD.TILE;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
-@Autonomous(name = "RedAllianceRedSample", group = "Autonomous", preselectTeleOp = "TeleJannikTest")
+@Autonomous(name = "RedAllianceRedSample", group = "Autonomous", preselectTeleOp = "TeleOpTest")
 public final class RedAllianceRedSample extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException

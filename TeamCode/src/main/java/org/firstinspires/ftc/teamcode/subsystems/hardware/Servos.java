@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystems.hardware;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.subsystems.CONSTANTS;
+import org.firstinspires.ftc.teamcode.subsystems.Constants;
 
 public class Servos
 {
@@ -14,12 +14,13 @@ public class Servos
     public static void init(HardwareMap hardwareMap) {
         try
         {
-            verticalRotate = hardwareMap.get(Servo.class, "verticalRotate");
             horizontalRotate = hardwareMap.get(Servo.class, "horizontalRotate");
+            verticalRotate = hardwareMap.get(Servo.class, "verticalRotate");
             clawRotate = hardwareMap.get(Servo.class, "clawRotate");
 
-            verticalRotate.scaleRange(CONSTANTS.INTAKE_CLAW.CLAW_CLOSED, CONSTANTS.INTAKE_CLAW.CLAW_OPEN);
-            //horizontalRotate.scaleRange();
+            horizontalRotate.scaleRange(Constants.INTAKE_CLAW.HORIZONTAL_MIN, Constants.INTAKE_CLAW.HORIZONTAL_MAX);
+            verticalRotate.scaleRange(Constants.INTAKE_CLAW.VERTICAL_MIN, Constants.INTAKE_CLAW.VERTICAL_MAX);
+            clawRotate.scaleRange(Constants.INTAKE_CLAW.CLOSED, Constants.INTAKE_CLAW.OPEN);
         }
         catch (Exception ignore) {}
     }

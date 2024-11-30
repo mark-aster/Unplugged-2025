@@ -7,14 +7,14 @@ public class Func
 {
     public static double lastTime;
 
-    public static void SetMotorPosition(DcMotorEx motor, int position, double power)
+    public static void SetMotorPosition(DcMotor motor, int position, double power)
     {
         motor.setPower(power);
         motor.setTargetPosition(position);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-    public static void SetMotorPosition(DcMotorEx motor, int position)
+    public static void SetMotorPosition(DcMotor motor, int position)
     {
         motor.setPower(1);
         motor.setTargetPosition(position);
