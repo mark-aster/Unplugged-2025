@@ -49,6 +49,7 @@ public final class ServoMotorConfigTest extends LinearOpMode {
     public static int servoIndex = 0;
     public static boolean isCH = true;
     public static boolean apply = false;
+    public static boolean allVipers = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -74,19 +75,18 @@ public final class ServoMotorConfigTest extends LinearOpMode {
                 Motors.allMotors[i].setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
         }
-
-        // Initialize servos
-        for (int i = 0; i < SERVO_PIN_COUNT; i++) {
-            servosCH[i] = hardwareMap.tryGet(Servo.class, "CH" + i);
-            servosEH[i] = hardwareMap.tryGet(Servo.class, "EH" + i + SERVO_PIN_COUNT);
-        }
+        servosCH[0]= Servos.verticalRotate;
+        servosCH[1] = Servos.horizontalRotate;
+        servosCH[3] = Servos.clawRotate;
 
         Debug.init(telemetry, FtcDashboard.getInstance());
     }
 
     private void update() {
         // Motor control
-        if (apply) {
+        if (apply)
+        {
+            servosCH[servoIndex].setPosition(servoPosition);
             switch (motorID) {
                 // Drive motors
                 case 0: SetMotorPosition((DcMotorEx) Motors.leftFront, M_Drive._0_LeftFrontPosition); break;
@@ -98,6 +98,14 @@ public final class ServoMotorConfigTest extends LinearOpMode {
                 case 5: SetMotorPosition((DcMotorEx) Motors.armRight, M_Sliders._5_ArmRightPosition); break;
                 case 6: SetMotorPosition((DcMotorEx) Motors.intakeExtend, M_Sliders._6_IntakeExtendPosition); break;
                 case 7: SetMotorPosition((DcMotorEx) Motors.intakeRotate, M_Sliders._7_IntakeRotatePosition); break;
+            }
+            if(allVipers)
+            {
+                SetMotorPosition((DcMotorEx) Motors.armLeft, M_Sliders._4_ArmLeftPosition);
+                SetMotorPosition((DcMotorEx) Motors.armRight, M_Sliders._5_ArmRightPosition);
+                SetMotorPosition((DcMotorEx) Motors.intakeExtend, M_Sliders._6_IntakeExtendPosition);
+                SetMotorPosition((DcMotorEx) Motors.intakeRotate, M_Sliders._7_IntakeRotatePosition);
+
             }
 
             apply = false;

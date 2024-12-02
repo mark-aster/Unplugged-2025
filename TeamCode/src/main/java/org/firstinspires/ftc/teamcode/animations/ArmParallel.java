@@ -53,6 +53,6 @@ public class ArmParallel extends LinearOpMode
     private double servoParallel()
     {
         int motorPos = Motors.intakeRotate.getCurrentPosition();
-        return 0.0001351549157*motorPos+0.3718019843366;
+        return 0.0001481481481*motorPos+0.3518518518;
     }
 }

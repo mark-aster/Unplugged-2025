@@ -22,16 +22,16 @@ import java.util.Locale;
 @TeleOp(name="TeleOpTest", group = "TeleopTests")
 public class TeleOpTest extends LinearOpMode
 {
-    // -- Controllers -- //
-    private final Gamepad ChassisController = gamepad1;
-    private final Gamepad ScorerController = gamepad2;
+    // -- Chassis -- //
+    private boolean inverted = false;
 
     // -- Positions -- //
     private int verticalPosition = Constants.VERTICAL_VIPERS.MIN_POSITION;
     private int horizontalPosition = Constants.INTAKE_VIPERS.MIN_POSITION_EXTEND;
     private int rotationPosition = Constants.INTAKE_VIPERS.MIN_POSITION_ROTATE;
 
-    private double clawPosition = Constants.INTAKE_CLAW.CLOSED;
+    private double clawPosition = 0;
+    private double horizontalRotatePosition = 0;
 
     @Override
     public void runOpMode() throws InterruptedException
@@ -54,8 +54,6 @@ public class TeleOpTest extends LinearOpMode
 
     private void reverseMotors()
     {
-        Motors.leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        Motors.leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
         Motors.intakeRotate.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
@@ -65,7 +63,7 @@ public class TeleOpTest extends LinearOpMode
         {
             handleChassis(); // Player 1
             handleScoring(); // Player 2
-            debugOdometry(); // Odometry Testing
+            //debugOdometry(); // Odometry Testing
         }
         catch (Exception e) {
             Debug.log("Error", e.getMessage());
@@ -82,13 +80,13 @@ public class TeleOpTest extends LinearOpMode
 
     private void handleMovement()
     {
-        int invertInput = Input.isDown("chassis_right_bumper", ChassisController.right_bumper) ? 1 : -1;
-        double speedInput = ChassisController.right_trigger;
+        int invertInput = Input.isDown("chassis_right_bumper", gamepad1.right_bumper) ? -1 : 1;
+        double speedInput = gamepad1.right_trigger;
         double maxSpeed = Constants.TELEOP.INITIAL_CHASSIS_SPEED + speedInput * (1 - Constants.TELEOP.INITIAL_CHASSIS_SPEED);
 
-        double forwardInput = (-ChassisController.left_stick_y) * invertInput;
-        double lateralInput = (ChassisController.left_stick_x * 1.1) * invertInput;
-        double angularInput = (ChassisController.right_stick_x) * invertInput;
+        double forwardInput = -gamepad1.left_stick_y * invertInput;
+        double lateralInput = gamepad1.left_stick_x * 1.1 * invertInput;
+        double angularInput = gamepad1.right_stick_x;
 
         double denominator = Math.max(Math.abs(forwardInput) + Math.abs(lateralInput) + Math.abs(angularInput), 1);
         double frontLeftPower = ((forwardInput + lateralInput + angularInput) / denominator) * maxSpeed;
@@ -120,9 +118,9 @@ public class TeleOpTest extends LinearOpMode
 
     private void handleVipers()
     {
-        double armsInput = ScorerController.left_stick_y;
-        double rotateInput = ScorerController.right_stick_y;
-        double extendInput = ScorerController.right_trigger - ScorerController.left_trigger;
+        double armsInput = -gamepad2.left_stick_y;
+        double rotateInput = gamepad2.right_stick_y;
+        double extendInput = gamepad2.right_trigger - gamepad2.left_trigger;
 
         verticalPosition = Func.adjustPosition(verticalPosition,
                 armsInput,
@@ -144,42 +142,48 @@ public class TeleOpTest extends LinearOpMode
 
         Func.SetMotorPosition(Motors.armLeft, verticalPosition);
         Func.SetMotorPosition(Motors.armRight, verticalPosition);
-
         Func.SetMotorPosition(Motors.intakeExtend, horizontalPosition);
-
         Func.SetMotorPosition(Motors.intakeRotate, rotationPosition);
 
         // Debug
 
         Debug.log("Debug", "-- Vertical Vipers-- ");
         Debug.log("verticalPosition", verticalPosition);
-        Debug.log("horizontalPosition", horizontalPosition);
+        Debug.log("verticalInput", armsInput);
         Debug.log("rotationPosition", rotationPosition);
     }
 
     private void handleClaws()
     {
-        int clawHorizontalInput = Input.onKeyDown("scorer_dpad_right",
-                ScorerController.dpad_right) ? 1
-                : Input.onKeyDown("scorer_dpad_left", ScorerController.dpad_left) ? 0
+        if(Input.onKeyDown("scorer_dpad_right",
+                gamepad2.dpad_right)) horizontalRotatePosition = 1;
+        if (Input.onKeyDown("scorer_dpad_left",
+                gamepad2.dpad_left)) horizontalRotatePosition = 0;
+
+        int clawVerticalInput = Input.onKeyDown("scorer_dpad_up", gamepad2.dpad_up) ? 1
+                : Input.onKeyDown("scorer_dpad_down", gamepad2.dpad_down) ? 0
                 : -1;
 
-        int clawVerticalInput = Input.onKeyDown("scorer_dpad_up", ScorerController.dpad_up) ? 1
-                : Input.onKeyDown("scorer_dpad_down", ScorerController.dpad_down) ? 0
-                : -1;
+        boolean clawOpenInput = Input.onKeyDown("scorer_a", gamepad2.a);
 
-        boolean clawOpenInput = Input.onKeyDown("scorer_a", ScorerController.a);
+        Servos.horizontalRotate.setPosition(horizontalRotatePosition);
+        Servos.verticalRotate.setPosition(servoParallel());
 
-        Servos.horizontalRotate.setPosition(clawHorizontalInput);
-        Servos.verticalRotate.setPosition(clawVerticalInput);
+        if(clawOpenInput && clawPosition == 1) clawPosition = 0;
+        else if(clawOpenInput && clawPosition == 0) clawPosition = 1;
 
-        if(clawOpenInput && clawPosition == Constants.INTAKE_CLAW.OPEN) clawPosition = Constants.INTAKE_CLAW.CLOSED;
-        else if(clawOpenInput && clawPosition == Constants.INTAKE_CLAW.CLOSED) clawPosition = Constants.INTAKE_CLAW.OPEN;
+        Servos.clawRotate.setPosition(clawPosition);
 
         // Debug
 
-        Debug.log("Debug", "-- Claws --");
-        Debug.log("clawPosition", clawPosition);
+        /*Debug.log("Debug", "-- Claws --");
+        Debug.log("clawPosition", clawPosition);*/
+    }
+
+    private double servoParallel()
+    {
+        int motorPos = Motors.intakeRotate.getCurrentPosition();
+        return 0.0001481481481*motorPos+0.3518518518;
     }
 
     // -- Odometry Testing -- //
@@ -193,8 +197,8 @@ public class TeleOpTest extends LinearOpMode
 
         Pose2D vel = Sensors.odo.getVelocity();
         String velocity = String.format(Locale.US,"{XVel: %.3f, YVel: %.3f, HVel: %.3f}", vel.getX(DistanceUnit.MM), vel.getY(DistanceUnit.MM), vel.getHeading(AngleUnit.DEGREES));
-        Debug.log("Velocity", velocity);
+        /*Debug.log("Velocity", velocity);
 
-        Debug.log("Status", Sensors.odo.getDeviceStatus());
+        Debug.log("Status", Sensors.odo.getDeviceStatus());*/
     }
 }
