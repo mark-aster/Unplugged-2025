@@ -25,6 +25,10 @@ public class TeleOpTest extends LinearOpMode
     // -- Chassis -- //
     private boolean inverted = false;
 
+    // -- Scorer -- //
+    private boolean keepClawParallel = true;
+    private int currentStep = 0;
+
     // -- Positions -- //
     private int verticalPosition = Constants.VERTICAL_VIPERS.MIN_POSITION;
     private int horizontalPosition = Constants.INTAKE_VIPERS.MIN_POSITION_EXTEND;
@@ -151,11 +155,12 @@ public class TeleOpTest extends LinearOpMode
         Debug.log("verticalPosition", verticalPosition);
         Debug.log("verticalInput", armsInput);
         Debug.log("rotationPosition", rotationPosition);
+        Debug.log("rotationInput", rotateInput);
+        Debug.log("currentStep",currentStep);
     }
 
-    private void handleClaws()
-    {
-        if(Input.onKeyDown("scorer_dpad_right",
+    private void handleClaws() {
+        if (Input.onKeyDown("scorer_dpad_right",
                 gamepad2.dpad_right)) horizontalRotatePosition = 1;
         if (Input.onKeyDown("scorer_dpad_left",
                 gamepad2.dpad_left)) horizontalRotatePosition = 0;
@@ -164,20 +169,64 @@ public class TeleOpTest extends LinearOpMode
                 : Input.onKeyDown("scorer_dpad_down", gamepad2.dpad_down) ? 0
                 : -1;
 
-        boolean clawOpenInput = Input.onKeyDown("scorer_a", gamepad2.a);
-
         Servos.horizontalRotate.setPosition(horizontalRotatePosition);
-        Servos.verticalRotate.setPosition(servoParallel());
+        if (keepClawParallel) Servos.verticalRotate.setPosition(servoParallel());
 
-        if(clawOpenInput && clawPosition == 1) clawPosition = 0;
-        else if(clawOpenInput && clawPosition == 0) clawPosition = 1;
+        if (Input.onKeyDown("scorer_a", gamepad2.a))
+        {
+            currentStep++;
+            if (currentStep > 2) currentStep = 0;
+        }
+        if (Input.onKeyDown("scorer_b", gamepad2.b))
+        {
+            currentStep--;
+            if (currentStep < 0) currentStep = 2;
+        }
+
+        if (Input.onKeyDown("scorer_a", gamepad2.a) || Input.onKeyDown("scorer_b", gamepad2.b))
+        {
+            switch (currentStep)
+            {
+                case 0:
+                    preparePickupSamplePos();
+                    break;
+                case 1:
+                    pickupSamplePos();
+                    break;
+                case 2:
+                    prepareLeaveSamplePos();
+                    break;
+            }
+        }
 
         Servos.clawRotate.setPosition(clawPosition);
+    }
 
-        // Debug
+    private void preparePickupSamplePos()
+    {
+        Func.SetMotorPosition(Motors.armLeft,Constants.VERTICAL_VIPERS.MIN_POSITION);
+        Func.SetMotorPosition(Motors.armRight,Constants.VERTICAL_VIPERS.MIN_POSITION);
+        Func.SetMotorPosition(Motors.intakeRotate, Constants.INTAKE_VIPERS.MIN_POSITION_ROTATE);
+        Func.SetMotorPosition(Motors.intakeExtend, Constants.INTAKE_VIPERS.MIN_POSITION_EXTEND);
+        Servos.clawRotate.setPosition(0);
+        Servos.horizontalRotate.setPosition(0);
+        keepClawParallel = true;
+    }
 
-        /*Debug.log("Debug", "-- Claws --");
-        Debug.log("clawPosition", clawPosition);*/
+    private void pickupSamplePos()
+    {
+        keepClawParallel = false;
+        Func.SetMotorPosition(Motors.intakeExtend, Constants.INTAKE_VIPERS.MIN_POSITION_EXTEND);
+        Servos.clawRotate.setPosition(1);
+        Servos.horizontalRotate.setPosition(1);
+        Servos.verticalRotate.setPosition(1);
+    }
+
+    private void prepareLeaveSamplePos()
+    {
+        Func.SetMotorPosition(Motors.intakeRotate, Constants.INTAKE_VIPERS.MAX_POSITION_ROTATE);
+        Func.SetMotorPosition(Motors.intakeExtend, Constants.INTAKE_VIPERS.MAX_POSITION_EXTEND);
+        Servos.verticalRotate.setPosition(1);
     }
 
     private double servoParallel()

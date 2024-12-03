@@ -75,17 +75,17 @@ public final class MotorConfigTest extends LinearOpMode
             {
                 // -- Drive -- //
 
-                case 0: SetMotorPosition((DcMotorEx) Motors.leftFront, M_Drive._0_LeftFrontPosition); break;
-                case 1: SetMotorPosition((DcMotorEx) Motors.rightFront, M_Drive._1_RightFrontPosition); break;
-                case 2: SetMotorPosition((DcMotorEx) Motors.leftRear, M_Drive._2_LeftBackPosition); break;
-                case 3: SetMotorPosition((DcMotorEx) Motors.rightRear, M_Drive._3_RightBackPosition); break;
+                case 0: SetMotorPosition(Motors.leftFront, M_Drive._0_LeftFrontPosition); break;
+                case 1: SetMotorPosition(Motors.rightFront, M_Drive._1_RightFrontPosition); break;
+                case 2: SetMotorPosition(Motors.leftRear, M_Drive._2_LeftBackPosition); break;
+                case 3: SetMotorPosition(Motors.rightRear, M_Drive._3_RightBackPosition); break;
 
                 // -- Sliders -- //
 
-                case 4: SetMotorPosition((DcMotorEx) Motors.armLeft, M_Sliders._4_ArmLeftPosition); break;
-                case 5: SetMotorPosition((DcMotorEx) Motors.armRight, M_Sliders._5_ArmRightPosition); break;
-                case 6: SetMotorPosition((DcMotorEx) Motors.intakeExtend, M_Sliders._6_IntakeExtendPosition); break;
-                case 7: SetMotorPosition((DcMotorEx) Motors.intakeRotate, M_Sliders._7_IntakeRotatePosition); break;
+                case 4: SetMotorPosition(Motors.armLeft, M_Sliders._4_ArmLeftPosition); break;
+                case 5: SetMotorPosition(Motors.armRight, M_Sliders._5_ArmRightPosition); break;
+                case 6: SetMotorPosition(Motors.intakeExtend, M_Sliders._6_IntakeExtendPosition); break;
+                case 7: SetMotorPosition(Motors.intakeRotate, M_Sliders._7_IntakeRotatePosition); break;
             }
             Apply = false;
         }

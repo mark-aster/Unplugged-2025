@@ -22,11 +22,11 @@ public final class Constants
 
     public static class INTAKE_CLAW
     {
-        public static double OPEN = 0.6;
-        public static double CLOSED = 0.47;
+        public static double OPEN = 0.52;
+        public static double CLOSED = 0.4;
 
-        public static double HORIZONTAL_MIN = 0.525;
-        public static double HORIZONTAL_MAX = 1;
+        public static double HORIZONTAL_MIN = 0.26;
+        public static double HORIZONTAL_MAX = 0.82;
 
         public static double VERTICAL_MIN = 0;
         public static double VERTICAL_MAX = 1;
