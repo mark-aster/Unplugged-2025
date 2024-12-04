@@ -4,7 +4,6 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -29,13 +28,15 @@ public class TeleOpTest extends LinearOpMode
     private boolean keepClawParallel = true;
     private int currentStep = 0;
 
-    // -- Positions -- //
+    // -- Positions Motors -- //
     private int verticalPosition = Constants.VERTICAL_VIPERS.MIN_POSITION;
     private int horizontalPosition = Constants.INTAKE_VIPERS.MIN_POSITION_EXTEND;
     private int rotationPosition = Constants.INTAKE_VIPERS.MIN_POSITION_ROTATE;
 
-    private double clawPosition = 0;
-    private double horizontalRotatePosition = 0;
+    // -- Positions Servo -- //
+    private double clawServoPosition = 0;
+    private double horizontalClawPosition = 0;
+    private double verticalClawServoPosition = 0;
 
     @Override
     public void runOpMode() throws InterruptedException
@@ -53,7 +54,16 @@ public class TeleOpTest extends LinearOpMode
         Sensors.init(hardwareMap);
         Debug.init(telemetry, FtcDashboard.getInstance());
 
+        setPositions();
         reverseMotors();
+    }
+
+    private void setPositions()
+    {
+        Func.SetMotorPosition(Motors.armLeft, verticalPosition);
+        Func.SetMotorPosition(Motors.armRight, verticalPosition);
+        Func.SetMotorPosition(Motors.intakeExtend, horizontalPosition);
+        Func.SetMotorPosition(Motors.intakeRotate, rotationPosition);
     }
 
     private void reverseMotors()
@@ -84,7 +94,7 @@ public class TeleOpTest extends LinearOpMode
 
     private void handleMovement()
     {
-        int invertInput = Input.isDown("chassis_right_bumper", gamepad1.right_bumper) ? -1 : 1;
+        int invertInput = Input.isDown("chassis_right_bumper", gamepad1.right_bumper) ? 1 : -1;
         double speedInput = gamepad1.right_trigger;
         double maxSpeed = Constants.TELEOP.INITIAL_CHASSIS_SPEED + speedInput * (1 - Constants.TELEOP.INITIAL_CHASSIS_SPEED);
 
@@ -104,12 +114,12 @@ public class TeleOpTest extends LinearOpMode
         Motors.rightRear.setPower(backRightPower);
 
         // Debug
-
+/*
         Debug.log("Debug", "Chassis");
         Debug.log("frontLeftPower", frontLeftPower);
         Debug.log("backLeftPower", backLeftPower);
         Debug.log("frontRightPower", frontRightPower);
-        Debug.log("backRightPower", backRightPower);
+        Debug.log("backRightPower", backRightPower);*/
     }
 
     // -- Manipulator / Scorer Controls -- //
@@ -144,10 +154,7 @@ public class TeleOpTest extends LinearOpMode
                 Constants.INTAKE_VIPERS.MAX_POSITION_ROTATE,
                 Constants.TELEOP.ROTATION_VIPER_SPEED);
 
-        Func.SetMotorPosition(Motors.armLeft, verticalPosition);
-        Func.SetMotorPosition(Motors.armRight, verticalPosition);
-        Func.SetMotorPosition(Motors.intakeExtend, horizontalPosition);
-        Func.SetMotorPosition(Motors.intakeRotate, rotationPosition);
+        setPositions();
 
         // Debug
 
@@ -156,34 +163,33 @@ public class TeleOpTest extends LinearOpMode
         Debug.log("verticalInput", armsInput);
         Debug.log("rotationPosition", rotationPosition);
         Debug.log("rotationInput", rotateInput);
-        Debug.log("currentStep",currentStep);
+        Debug.log("horizontalPosition", horizontalPosition);
+        Debug.log("horizontalInput", extendInput);
+        Debug.log("currentStep", currentStep);
     }
 
     private void handleClaws() {
         if (Input.onKeyDown("scorer_dpad_right",
-                gamepad2.dpad_right)) horizontalRotatePosition = 1;
+                gamepad2.dpad_right)) horizontalClawPosition = 1;
         if (Input.onKeyDown("scorer_dpad_left",
-                gamepad2.dpad_left)) horizontalRotatePosition = 0;
+                gamepad2.dpad_left)) horizontalClawPosition = 0;
 
         int clawVerticalInput = Input.onKeyDown("scorer_dpad_up", gamepad2.dpad_up) ? 1
                 : Input.onKeyDown("scorer_dpad_down", gamepad2.dpad_down) ? 0
                 : -1;
-
-        Servos.horizontalRotate.setPosition(horizontalRotatePosition);
+// mark suge cateodata!
+        Servos.horizontalRotate.setPosition(horizontalClawPosition);
         if (keepClawParallel) Servos.verticalRotate.setPosition(servoParallel());
+        else Servos.verticalRotate.setPosition(verticalClawServoPosition);
 
         if (Input.onKeyDown("scorer_a", gamepad2.a))
         {
             currentStep++;
             if (currentStep > 2) currentStep = 0;
         }
-        if (Input.onKeyDown("scorer_b", gamepad2.b))
-        {
-            currentStep--;
-            if (currentStep < 0) currentStep = 2;
-        }
+        if (Input.onKeyDown("scorer_b", gamepad2.b)) currentStep = 0;
 
-        if (Input.onKeyDown("scorer_a", gamepad2.a) || Input.onKeyDown("scorer_b", gamepad2.b))
+        if (Input.isDown("scorer_a", gamepad2.a) || Input.isDown("scorer_b", gamepad2.b))
         {
             switch (currentStep)
             {
@@ -199,34 +205,34 @@ public class TeleOpTest extends LinearOpMode
             }
         }
 
-        Servos.clawRotate.setPosition(clawPosition);
+        Servos.clawRotate.setPosition(clawServoPosition);
     }
 
     private void preparePickupSamplePos()
     {
-        Func.SetMotorPosition(Motors.armLeft,Constants.VERTICAL_VIPERS.MIN_POSITION);
-        Func.SetMotorPosition(Motors.armRight,Constants.VERTICAL_VIPERS.MIN_POSITION);
-        Func.SetMotorPosition(Motors.intakeRotate, Constants.INTAKE_VIPERS.MIN_POSITION_ROTATE);
-        Func.SetMotorPosition(Motors.intakeExtend, Constants.INTAKE_VIPERS.MIN_POSITION_EXTEND);
-        Servos.clawRotate.setPosition(0);
-        Servos.horizontalRotate.setPosition(0);
+        clawServoPosition = 0;
+        verticalPosition = Constants.VERTICAL_VIPERS.MIN_POSITION;
+        rotationPosition = Constants.INTAKE_VIPERS.MIN_POSITION_ROTATE;
+        horizontalPosition = Constants.INTAKE_VIPERS.MIN_POSITION_EXTEND;
+        horizontalClawPosition = 0;
         keepClawParallel = true;
     }
 
     private void pickupSamplePos()
     {
+        clawServoPosition = 1;
         keepClawParallel = false;
-        Func.SetMotorPosition(Motors.intakeExtend, Constants.INTAKE_VIPERS.MIN_POSITION_EXTEND);
-        Servos.clawRotate.setPosition(1);
-        Servos.horizontalRotate.setPosition(1);
-        Servos.verticalRotate.setPosition(1);
+        horizontalPosition = Constants.INTAKE_VIPERS.MIN_POSITION_EXTEND;
+        horizontalClawPosition = 1;
+        verticalClawServoPosition = 0;
     }
 
     private void prepareLeaveSamplePos()
     {
-        Func.SetMotorPosition(Motors.intakeRotate, Constants.INTAKE_VIPERS.MAX_POSITION_ROTATE);
-        Func.SetMotorPosition(Motors.intakeExtend, Constants.INTAKE_VIPERS.MAX_POSITION_EXTEND);
-        Servos.verticalRotate.setPosition(1);
+        verticalPosition = Constants.VERTICAL_VIPERS.MAX_POSITION;
+        rotationPosition = Constants.INTAKE_VIPERS.MAX_POSITION_ROTATE;
+        horizontalPosition = Constants.INTAKE_VIPERS.MAX_POSITION_EXTEND;
+        verticalClawServoPosition = 0;
     }
 
     private double servoParallel()

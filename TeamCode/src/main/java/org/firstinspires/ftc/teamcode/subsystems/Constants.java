@@ -34,7 +34,7 @@ public final class Constants
 
     public static class VERTICAL_VIPERS
     {
-        public static int MAX_POSITION = 1700;
+        public static int MAX_POSITION = 2000;
         public static int MIN_POSITION = 0;
     }
 
@@ -43,7 +43,7 @@ public final class Constants
         public static int MAX_POSITION_ROTATE = 2500;
         public static int MIN_POSITION_ROTATE = 0;
 
-        public static int MAX_POSITION_EXTEND = 700;
+        public static int MAX_POSITION_EXTEND = 2000;
         public static int MIN_POSITION_EXTEND = 0;
     }
 
