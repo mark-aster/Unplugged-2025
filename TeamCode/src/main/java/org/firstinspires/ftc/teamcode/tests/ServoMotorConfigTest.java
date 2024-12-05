@@ -79,10 +79,10 @@ public final class ServoMotorConfigTest extends LinearOpMode {
         servosCH[1] = Servos.horizontalRotate;
         servosCH[2] = Servos.clawRotate;
 
-        for (int i = 0; i<3; i++)
+/*        for (int i = 0; i<3; i++)
         {
             servosCH[i].scaleRange(0,1);
-        }
+        }*/
 
         Debug.init(telemetry, FtcDashboard.getInstance());
     }

@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class Func
 {
@@ -23,13 +22,22 @@ public class Func
 
     public static double deltaTime() {
         long currentTime = System.nanoTime();
-        double deltaTime = (currentTime - lastTime) / 1e9;
-        lastTime = currentTime;
-        return deltaTime;
+        return (currentTime - lastTime) / 1e9;
     }
 
-    public static int adjustPosition(int currentPosition, double input, int min, int max, double ticksPerSecond) {
+    public static void updateLastTime() {
+        lastTime = System.nanoTime();
+    }
+
+
+    public static int adjustPositionMotor(int currentPosition, double input, int min, int max, double ticksPerSecond) {
         currentPosition += (int) (Func.deltaTime() * ticksPerSecond * input);
+        return Math.max(min, Math.min(currentPosition, max));
+    }
+
+    public static double adjustPositionServo(double currentPosition, double input, double min, double max,double speed)
+    {
+        currentPosition += Func.deltaTime() * speed * input;
         return Math.max(min, Math.min(currentPosition, max));
     }
 

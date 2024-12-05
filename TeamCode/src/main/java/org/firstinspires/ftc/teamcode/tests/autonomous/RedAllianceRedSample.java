@@ -44,7 +44,7 @@ public final class RedAllianceRedSample extends LinearOpMode {
                         .waitSeconds(1.5)
 
                         .setTangent(0)
-                        .splineToLinearHeading(new Pose2d(beginPose.position.x+ TILE/2, beginPose.position.y, Math.toRadians(180)), Math.toRadians(0))
+                        .splineToLinearHeading(new Pose2d(beginPose.position.x + TILE/2, beginPose.position.y, Math.toRadians(180)), Math.toRadians(0))
 
                         .build()
         );

@@ -18,8 +18,8 @@ import org.firstinspires.ftc.teamcode.subsystems.hardware.Servos;
 
 import java.util.Locale;
 
-@TeleOp(name="TeleOpTest", group = "TeleopTests")
-public class TeleOpTest extends LinearOpMode
+@TeleOp(name="TeleOpFullControl", group = "TeleopTests")
+public class TeleOpFullControl extends LinearOpMode
 {
     // -- Chassis -- //
     private boolean inverted = false;
@@ -55,7 +55,7 @@ public class TeleOpTest extends LinearOpMode
         Sensors.init(hardwareMap);
         Debug.init(telemetry, FtcDashboard.getInstance());
 
-        setPresetPositions();
+        //setPresetPositions();
         setPositions();
         reverseMotors();
     }
@@ -102,7 +102,7 @@ public class TeleOpTest extends LinearOpMode
 
         double forwardInput = -gamepad1.left_stick_y * invertInput;
         double lateralInput = gamepad1.left_stick_x * 1.1 * invertInput;
-        double angularInput = gamepad1.right_stick_x;
+        double angularInput = -gamepad1.right_stick_x;
 
         double denominator = Math.max(Math.abs(forwardInput) + Math.abs(lateralInput) + Math.abs(angularInput), 1);
         double frontLeftPower = ((forwardInput + lateralInput + angularInput) / denominator) * maxSpeed;
@@ -135,7 +135,7 @@ public class TeleOpTest extends LinearOpMode
     private void handleVipers()
     {
         double armsInput = -gamepad2.left_stick_y;
-        double rotateInput = gamepad2.right_stick_y;
+        double rotateInput = -gamepad2.right_stick_y;
         double extendInput = gamepad2.right_trigger - gamepad2.left_trigger;
 
         verticalPosition = Func.adjustPositionMotor(verticalPosition,
@@ -171,6 +171,10 @@ public class TeleOpTest extends LinearOpMode
         Debug.log("horizontalInput", extendInput);
         Debug.log("rotationPosition ", rotationPosition);
         Debug.log("rotationInput", rotateInput);
+        Debug.log("servoHorizontalInput", clawHorizontalInput);
+        Debug.log("servoHorizontalPosition", horizontalClawPosition);
+        Debug.log("servoVerticalInput", clawVerticalInput);
+        Debug.log("servoVerticalPosition", verticalClawServoPosition);
         Debug.log("currentStep", currentStep);
     }
 
@@ -180,39 +184,47 @@ public class TeleOpTest extends LinearOpMode
         return (int)(0.1764705882353*motorPos+111.76470588);
     }
 
-    private void handleClaws() {
-        if (Input.onKeyDown("scorer_dpad_right",
-                gamepad2.dpad_right)) horizontalClawPosition = 1;
-        if (Input.onKeyDown("scorer_dpad_left",
-                gamepad2.dpad_left)) horizontalClawPosition = 0;
+    double clawHorizontalInput = 0;
+    double clawVerticalInput = 0;
 
-        int clawVerticalInput = Input.onKeyDown("scorer_dpad_up", gamepad2.dpad_up) ? 1
-                : Input.onKeyDown("scorer_dpad_down", gamepad2.dpad_down) ? 0
-                : -1;
+    private void handleClaws()
+    {
+        double clawHorizontalInput = Input.isDown("scorer_dpad_left", gamepad2.dpad_left) ? 1
+                : Input.isDown("scorer_dpad_right", gamepad2.dpad_right) ? -1
+                : 0;
+
+        double clawVerticalInput = Input.isDown("scorer_dpad_up", gamepad2.dpad_up) ? -1
+                : Input.isDown("scorer_dpad_down", gamepad2.dpad_down) ? 1
+                : 0;
+
+        horizontalClawPosition = Func.adjustPositionServo(horizontalClawPosition,
+                clawHorizontalInput,
+                Constants.INTAKE_CLAW.HORIZONTAL_MIN,
+                Constants.INTAKE_CLAW.HORIZONTAL_MAX,
+                1);
+
+        verticalClawServoPosition = Func.adjustPositionServo(verticalClawServoPosition,
+                clawVerticalInput,
+                Constants.INTAKE_CLAW.VERTICAL_MIN,
+                Constants.INTAKE_CLAW.VERTICAL_MAX,
+                1);
 
         Servos.horizontalRotate.setPosition(horizontalClawPosition);
-
-        if (keepClawParallel) Servos.verticalRotate.setPosition(servoParallel());
-        else Servos.verticalRotate.setPosition(verticalClawServoPosition);
+        Servos.verticalRotate.setPosition(verticalClawServoPosition);
 
         if (Input.onKeyDown("scorer_a", gamepad2.a))
         {
-            currentStep++;
-            if (currentStep > 5) currentStep = 0;
+            Servos.clawRotate.setPosition(1);
         }
-        if (Input.onKeyDown("scorer_y", gamepad2.y)) currentStep = 0;
-
-        if (Input.isDown("scorer_a", gamepad2.a) || Input.isDown("scorer_y", gamepad2.y))
+        if (Input.onKeyDown("scorer_b", gamepad2.b))
         {
-            setPresetPositions();
+            Servos.clawRotate.setPosition(0);
         }
-
-        Servos.clawRotate.setPosition(clawServoPosition);
     }
 
     private void setPresetPositions()
     {
-        switch (currentStep)
+        /*switch (currentStep)
         {
             case 0:
                 preparePickupSamplePos();
@@ -232,7 +244,7 @@ public class TeleOpTest extends LinearOpMode
             case 5:
                 leaveSamplePos();
                 break;
-        }
+        }*/
     }
 
     private void preparePickupSamplePos()
