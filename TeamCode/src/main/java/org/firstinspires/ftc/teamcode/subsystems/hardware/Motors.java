@@ -60,6 +60,7 @@ public class Motors
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
         armRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        intakeRotate.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     private static void setAllMotors() {

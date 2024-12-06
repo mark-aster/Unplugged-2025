@@ -40,7 +40,8 @@ public class MeepMeepTesting
                 .start();
     }
 
-    private static RoadRunnerBotEntity blueAllianceYellow() {
+    private static RoadRunnerBotEntity blueAllianceYellow()
+    {
         return new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 12.5)
@@ -136,168 +137,34 @@ public class MeepMeepTesting
 
     }
 
-    private static RoadRunnerBotEntity redAllianceYellow()
-    {
-        return new DefaultBotBuilder(meepMeep)
-                .setConstraints(60,60, Math.toRadians(180), Math.toRadians(180), 12.5)
-                .followTrajectorySequence(drive -> drive.trajectorySequenceBuilder(beginPoseYellow)
-
-                        .splineToLinearHeading(new Pose2d(samplePosYellow.getX(), samplePosYellow.getY(), Math.toRadians(180)), Math.toRadians(90))
-
-                        .addTemporalMarker(() -> {})
-                        .waitSeconds(1.5) // first sample
-                        .setTangent(Math.toRadians(225))
-                        .splineToLinearHeading(new Pose2d(-2 * TILE,-2 * TILE + TILE / 2, Math.toRadians(235)), Math.toRadians(225))
-                        .waitSeconds(1.5)
-                        .setTangent(Math.toRadians(45))
-                        .splineToLinearHeading(new Pose2d(samplePosYellow.getX() - TILE / 4, samplePosYellow.getY(), Math.toRadians(180)), Math.toRadians(45))
-
-                        .addTemporalMarker(() -> {})
-                        .waitSeconds(1.5) // second sample
-                        .setTangent(Math.toRadians(225))
-                        .splineToLinearHeading(new Pose2d(-2 * TILE,-2 * TILE + TILE / 2, Math.toRadians(235)), Math.toRadians(225))
-                        .waitSeconds(1.5)
-                        .setTangent(Math.toRadians(90))
-                        .splineToLinearHeading(new Pose2d(samplePosYellow.getX() - TILE / 2 , samplePosYellow.getY(), Math.toRadians(180)), Math.toRadians(90))
-
-                        .addTemporalMarker(() -> {})
-                        .waitSeconds(1.5) // third sample
-                        .setTangent(Math.toRadians(270))
-                        .splineToLinearHeading(new Pose2d(-2 * TILE,-2 * TILE + TILE / 2, Math.toRadians(235)), Math.toRadians(270))
-
-                        .addTemporalMarker(() -> {})
-                        .waitSeconds(1.5) // fourth sample
-                        .setTangent(Math.toRadians(45))
-                        .splineToLinearHeading(new Pose2d(beginPoseYellow.getX()+TILE/3, beginPoseYellow.getY() + 2 * TILE + TILE/6, Math.toRadians(0)), Math.toRadians(45))
-                        .waitSeconds(3.5)
-                        .setTangent(Math.toRadians(245))
-                        .splineToLinearHeading(new Pose2d(-2 * TILE,-2 * TILE + TILE / 2, Math.toRadians(235)), Math.toRadians(245))
-
-                        .addTemporalMarker(() -> {})
-                        .waitSeconds(1.5) // park
-                        .setTangent(Math.toRadians(0))
-                        .waitSeconds(1)
-                        .splineToLinearHeading(new Pose2d(beginPoseYellow.getX() + 3 * TILE, beginPoseYellow.getY(), Math.toRadians(0)), Math.toRadians(-90))
-
-                        .build()
-                );
-    }
-
-    private static RoadRunnerBotEntity redAllianceYellowNew()
-    {
-        return new DefaultBotBuilder(meepMeep)
-                .setConstraints(60,60, Math.toRadians(180), Math.toRadians(180), 12.5)
-                .followTrajectorySequence(drive -> drive.trajectorySequenceBuilder(beginPoseYellow)
-
-                        .waitSeconds(1.5)
-                        .splineToLinearHeading(new Pose2d(samplePosYellow.getX(), samplePosYellow.getY(), Math.toRadians(180)), Math.toRadians(90))
-
-                        .addTemporalMarker(() -> {})
-                        .waitSeconds(1.5) // first sample
-                        .setTangent(Math.toRadians(225))
-                        .splineToLinearHeading(new Pose2d(-2 * TILE,-2 * TILE + TILE / 2, Math.toRadians(235)), Math.toRadians(225))
-                        .waitSeconds(1.5)
-                        .setTangent(Math.toRadians(45))
-                        .splineToLinearHeading(new Pose2d(samplePosYellow.getX() - TILE / 4, samplePosYellow.getY(), Math.toRadians(180)), Math.toRadians(45))
-
-                        .addTemporalMarker(() -> {})
-                        .waitSeconds(1.5) // second sample
-                        .setTangent(Math.toRadians(225))
-                        .splineToLinearHeading(new Pose2d(-2 * TILE,-2 * TILE + TILE / 2, Math.toRadians(235)), Math.toRadians(225))
-                        .waitSeconds(1.5)
-                        .setTangent(Math.toRadians(90))
-                        .splineToLinearHeading(new Pose2d(samplePosYellow.getX() - TILE / 2 , samplePosYellow.getY(), Math.toRadians(180)), Math.toRadians(90))
-
-                        .addTemporalMarker(() -> {})
-                        .waitSeconds(1.5) // third sample
-                        .setTangent(Math.toRadians(270))
-                        .splineToLinearHeading(new Pose2d(-2 * TILE,-2 * TILE + TILE / 2, Math.toRadians(235)), Math.toRadians(270))
-
-                        .addTemporalMarker(() -> {})
-                        .waitSeconds(1.5) // fourth sample
-                        .setTangent(Math.toRadians(45))
-                        .splineToLinearHeading(new Pose2d(beginPoseYellow.getX()+TILE/3, beginPoseYellow.getY() + 2 * TILE + TILE/6, Math.toRadians(0)), Math.toRadians(45))
-                        .waitSeconds(3.5)
-                        .setTangent(Math.toRadians(245))
-                        .splineToLinearHeading(new Pose2d(-2 * TILE,-2 * TILE + TILE / 2, Math.toRadians(235)), Math.toRadians(245))
-                        .waitSeconds(1.5)
-                        .setTangent(Math.toRadians(45))
-                        .splineToLinearHeading(new Pose2d(beginPoseYellow.getX()+TILE/3, beginPoseYellow.getY() + 2 * TILE + TILE/6, Math.toRadians(0)), Math.toRadians(45))
-                        .waitSeconds(1.5)
-                        .build()
-                );
-    }
-
     private static RoadRunnerBotEntity redAllianceYellowNewNew()
     {
         return new DefaultBotBuilder(meepMeep)
                 .setColorScheme(new ColorSchemeRedDark())
                 .setConstraints(60,60, Math.toRadians(180), Math.toRadians(180), 12.5)
-                .followTrajectorySequence(drive -> drive.trajectorySequenceBuilder(beginPoseYellow)
-                        .splineToLinearHeading(new Pose2d(-2*TILE, -2*TILE, Math.toRadians(45)), Math.toRadians(180))
+                .followTrajectorySequence(drive -> drive.trajectorySequenceBuilder(new Pose2d(-TILE + -TILE / 2,-2 * TILE + -TILE / 2, Math.toRadians(90)))
+                        .splineToLinearHeading(new Pose2d(-2*TILE, -2*TILE, Math.toRadians(225)), Math.toRadians(180))
                         .waitSeconds(1.5)
 
                         .splineToLinearHeading(new Pose2d(-2*TILE, -1.75*TILE, Math.toRadians(90)), Math.toRadians(180))
                         .waitSeconds(1.5)
-                        .splineToLinearHeading(new Pose2d(-2*TILE, -2*TILE, Math.toRadians(45)), Math.toRadians(180))
+                        .splineToLinearHeading(new Pose2d(-2*TILE, -2*TILE, Math.toRadians(225)), Math.toRadians(180))
                         .waitSeconds(1.5)
 
                         .splineToLinearHeading(new Pose2d(-2*TILE, -1.75*TILE, Math.toRadians(120)), Math.toRadians(180))
                         .waitSeconds(1.5)
-                        .splineToLinearHeading(new Pose2d(-2*TILE, -2*TILE, Math.toRadians(45)), Math.toRadians(180))
+                        .splineToLinearHeading(new Pose2d(-2*TILE, -2*TILE, Math.toRadians(225)), Math.toRadians(180))
                         .waitSeconds(1.5)
 
+                        .setTangent(Math.toRadians(0))
                         .splineToLinearHeading(new Pose2d(-2.1*TILE, -1.5*TILE, Math.toRadians(145)), Math.toRadians(180))
                         .waitSeconds(1.5)
                         .setTangent(Math.toRadians(0))
-                        .splineToLinearHeading(new Pose2d(-2*TILE, -2*TILE, Math.toRadians(45)), Math.toRadians(180))
+                        .splineToLinearHeading(new Pose2d(-2*TILE, -2*TILE, Math.toRadians(225)), Math.toRadians(180))
                         .waitSeconds(1.5)
-// fourth sample
+
                         .setTangent(Math.toRadians(90))
-                        .splineToLinearHeading(new Pose2d(beginPoseYellow.getX()+TILE/3, beginPoseYellow.getY() + 2 * TILE + TILE/6, Math.toRadians(0)), Math.toRadians(0))
-                        .waitSeconds(3.5)
-                        .setTangent(Math.toRadians(180))
-                        .splineToLinearHeading(new Pose2d(-2*TILE, -2*TILE, Math.toRadians(45)), Math.toRadians(270))
-                        .waitSeconds(1.5)
-                        .setTangent(Math.toRadians(90))
-                        .splineToLinearHeading(new Pose2d(beginPoseYellow.getX()+TILE/3, beginPoseYellow.getY() + 2 * TILE + TILE/6, Math.toRadians(0)), Math.toRadians(0))
-                        .build()
-                );
-    }
-
-    private static RoadRunnerBotEntity redAllianceRed()
-    {
-        return new DefaultBotBuilder(meepMeep)
-                .setConstraints(60,60, Math.toRadians(180), Math.toRadians(180), 12.5)
-                .followTrajectorySequence(drive -> drive.trajectorySequenceBuilder(beginPoseRed)
-
-                        .addTemporalMarker(() -> {}) // first sample
-                        .splineToLinearHeading(new Pose2d(beginPoseRed.getX(), beginPoseRed.getY() + TILE/1.5, Math.toRadians(90)), Math.toRadians(90))
-                        .waitSeconds(1.5)
-                        .setTangent(Math.toRadians(200))
-                        .splineToLinearHeading(new Pose2d(beginPoseRed.getX() - TILE * 3.5, beginPoseRed.getY(), Math.toRadians(180) ), Math.toRadians(190))
-                        .waitSeconds(1.5)
-
-                        .addTemporalMarker(() -> {}) // second sample
-                        .setTangent(Math.toRadians(15))
-                        .splineToLinearHeading(new Pose2d(beginPoseRed.getX(), beginPoseRed.getY() + TILE/1.5, Math.toRadians(65)), Math.toRadians(0))
-                        .waitSeconds(1.5)
-                        .setTangent(Math.toRadians(200))
-                        .splineToLinearHeading(new Pose2d(beginPoseRed.getX() - TILE * 3.5, beginPoseRed.getY(), Math.toRadians(180) ), Math.toRadians(190))
-                        .waitSeconds(1.5)
-
-                        .addTemporalMarker(() -> {}) // second sample
-                        .setTangent(Math.toRadians(15))
-                        .splineToLinearHeading(new Pose2d(beginPoseRed.getX(), beginPoseRed.getY() + TILE/1.5, Math.toRadians(45)), Math.toRadians(0))
-                        .waitSeconds(1.5)
-                        .setTangent(Math.toRadians(200))
-                        .splineToLinearHeading(new Pose2d(beginPoseRed.getX() - TILE * 3.5, beginPoseRed.getY(), Math.toRadians(180) ), Math.toRadians(190))
-                        .waitSeconds(1.5)
-
-                        .addTemporalMarker(() -> {}) // park
-                        .setTangent(0)
-                        .splineToLinearHeading(new Pose2d(beginPoseRed.getX()+ TILE/2, beginPoseRed.getY(), Math.toRadians(180)), Math.toRadians(0))
-
+                        .splineToLinearHeading(new Pose2d(beginPoseYellow .getX()/3 - TILE/2, beginPoseYellow .getY() + 2 * TILE + TILE/6, Math.toRadians(0)), Math.toRadians(0))
                         .build()
                 );
     }
@@ -363,14 +230,4 @@ public class MeepMeepTesting
                 );
     }
 
-    private static RoadRunnerBotEntity splineTest()
-    {
-        return new DefaultBotBuilder(meepMeep)
-                .setConstraints(60,60, Math.toRadians(180), Math.toRadians(180), 12.5)
-                .followTrajectorySequence(drive -> drive.trajectorySequenceBuilder(new Pose2d(0,0,Math.toRadians(180)))
-
-                        .setTangent(Math.toRadians(180.0))
-                        .splineToLinearHeading(new Pose2d(70.0, 70.0,Math.toRadians(180)), Math.toRadians(0.0))
-                        .build());
-    }
 }

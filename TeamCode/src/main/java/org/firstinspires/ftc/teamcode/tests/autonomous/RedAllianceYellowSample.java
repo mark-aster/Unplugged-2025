@@ -2,63 +2,143 @@ package org.firstinspires.ftc.teamcode.tests.autonomous;
 
 import static org.firstinspires.ftc.teamcode.subsystems.Constants.FIELD.TILE;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.SleepAction;
+import com.acmerobotics.roadrunner.Trajectory;
+import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.PinpointDrive;
+import org.firstinspires.ftc.teamcode.subsystems.Debug;
+import org.firstinspires.ftc.teamcode.subsystems.Presets;
+import org.firstinspires.ftc.teamcode.subsystems.hardware.Motors;
+import org.firstinspires.ftc.teamcode.subsystems.hardware.Sensors;
+import org.firstinspires.ftc.teamcode.subsystems.hardware.Servos;
 
 @Autonomous(name = "RedAllianceYellowSample", group = "Autonomous", preselectTeleOp = "TeleOpTest")
-public final class RedAllianceYellowSample extends LinearOpMode {
+public final class RedAllianceYellowSample extends LinearOpMode
+{
+    private void initHardware()
+    {
+        Motors.init(hardwareMap);
+        Servos.init(hardwareMap);
+        Sensors.init(hardwareMap);
+        Debug.init(telemetry, FtcDashboard.getInstance());
+    }
+
     @Override
     public void runOpMode() throws InterruptedException
     {
-
+        initHardware();
         Pose2d beginPose = new Pose2d(-TILE + -TILE / 2,-2 * TILE + -TILE / 2, Math.toRadians(90));
-        Pose2d samplePos = new Pose2d(beginPose.position.x+TILE/6, beginPose.position.y+TILE+TILE/2, Math.toRadians(90));
+        PinpointDrive drive = new PinpointDrive(hardwareMap, beginPose);
 
+        // -- TODO POSITIONS -- //
+        int rotateSamplePos = 0;
 
-        MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
+        int extendSamplePos1 = 0;
+        double rotateClawSamplePos1 = 0;
+        int extendSamplePos2 = 0;
+        double rotateClawSamplePos2 = 0;
+        int extendSamplePos3 = 0;
+        double rotateClawSamplePos3 = 0;
+
+        int extendParkPos = 0;
+        int rotateParkPos = 0;
+
+        Action goToBasket = drive.actionBuilder(drive.pose)
+                .splineToLinearHeading(new Pose2d(-2*TILE, -2*TILE, Math.toRadians(225)), Math.toRadians(180))
+                .build();
+
+        TrajectoryActionBuilder goToSample1 = drive.actionBuilder(drive.pose)
+                .splineToLinearHeading(new Pose2d(-2*TILE, -1.75*TILE, Math.toRadians(90)), Math.toRadians(180));
+
+        TrajectoryActionBuilder goToSample2 = drive.actionBuilder(drive.pose)
+                .splineToLinearHeading(new Pose2d(-2*TILE, -1.75*TILE, Math.toRadians(120)), Math.toRadians(180));
+
+        TrajectoryActionBuilder goToSample3 = drive.actionBuilder(drive.pose)
+                .setTangent(Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-2.1*TILE, -1.5*TILE, Math.toRadians(145)), Math.toRadians(180));
+
+        TrajectoryActionBuilder goToPark = drive.actionBuilder(drive.pose)
+                .setTangent(Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(beginPose.position.x / 3 - TILE / 2, beginPose.position.y + 2 * TILE + TILE / 6, Math.toRadians(0)), Math.toRadians(0));
+
 
         waitForStart();
 
+        if (isStopRequested()) return;
+
         Actions.runBlocking(
-                drive.actionBuilder(beginPose)
+            new SequentialAction
+            (
+                    goToBasket,
+                    Presets.Scorer.prepareLeaveSamplePos(),
+                    new SleepAction(0.5), //TODO TIME FOR VIPERS TO GET TO POSITION
+                    Presets.Scorer.closeClawPos(),
+                    new ParallelAction(goToSample1.build(),Presets.Scorer.preparePickupSamplePos()),
 
-                        .splineToLinearHeading(new Pose2d(samplePos.position.x, samplePos.position.y, Math.toRadians(180)), Math.toRadians(90))
+                    //Sample 1
+                    Presets.Scorer.extendViper(extendSamplePos1 /*TODO FIND POSITION*/),
+                    Presets.Scorer.rotateHorizontalClaw(rotateClawSamplePos1 /*TODO FIND POSITION*/),
+                    new SleepAction(0.5), //TODO TIME FOR VIPERS TO GET TO POSITION
+                    Presets.Scorer.rotateViper(rotateSamplePos /*TODO FIND POSITION*/),
+                    new SleepAction(0.2), //TODO TIME FOR VIPERS TO LOWER
+                    Presets.Scorer.openClawPos(),
+                    new SleepAction(0.1),
+                    Presets.Scorer.pickupSamplePos(),
 
-                        .waitSeconds(1.5) // first sample
-                        .setTangent(Math.toRadians(225))
-                        .splineToLinearHeading(new Pose2d(-2 * TILE,-2 * TILE + TILE / 2, Math.toRadians(235)), Math.toRadians(225))
-                        .waitSeconds(1.5)
-                        .setTangent(Math.toRadians(45))
-                        .splineToLinearHeading(new Pose2d(samplePos.position.x - TILE / 4, samplePos.position.y, Math.toRadians(180)), Math.toRadians(45))
+                    goToBasket,
+                    Presets.Scorer.prepareLeaveSamplePos(),
+                    new SleepAction(0.5), //TODO TIME FOR VIPERS TO GET TO POSITION
+                    Presets.Scorer.closeClawPos(),
+                    new SleepAction(0.2),
+                    new ParallelAction(goToSample2.build(),Presets.Scorer.preparePickupSamplePos()),
 
-                        .waitSeconds(1.5) // second sample
-                        .setTangent(Math.toRadians(225))
-                        .splineToLinearHeading(new Pose2d(-2 * TILE,-2 * TILE + TILE / 2, Math.toRadians(235)), Math.toRadians(225))
-                        .waitSeconds(1.5)
-                        .setTangent(Math.toRadians(90))
-                        .splineToLinearHeading(new Pose2d(samplePos.position.x - TILE / 2 , samplePos.position.y, Math.toRadians(180)), Math.toRadians(90))
+                    //Sample 2
+                    Presets.Scorer.extendViper(extendSamplePos2 /*TODO FIND POSITION*/),
+                    Presets.Scorer.rotateHorizontalClaw(rotateClawSamplePos2 /*TODO FIND POSITION*/),
+                    new SleepAction(0.5), //TODO TIME FOR VIPERS TO GET TO POSITION
+                    Presets.Scorer.rotateViper(rotateSamplePos /*TODO FIND POSITION*/),
+                    new SleepAction(0.2), //TODO TIME FOR VIPERS TO LOWER
+                    Presets.Scorer.openClawPos(),
+                    new SleepAction(0.1),
+                    Presets.Scorer.pickupSamplePos(),
 
-                        .waitSeconds(1.5) // third sample
-                        .setTangent(Math.toRadians(270))
-                        .splineToLinearHeading(new Pose2d(-2 * TILE,-2 * TILE + TILE / 2, Math.toRadians(235)), Math.toRadians(270))
+                    goToBasket,
+                    Presets.Scorer.prepareLeaveSamplePos(),
+                    new SleepAction(0.5), //TODO TIME FOR VIPERS TO GET TO POSITION
+                    Presets.Scorer.closeClawPos(),
+                    new SleepAction(0.2),
+                    new ParallelAction(goToSample3.build(),Presets.Scorer.preparePickupSamplePos()),
 
-                        .waitSeconds(1.5) // fourth sample
-                        .setTangent(Math.toRadians(45))
-                        .splineToLinearHeading(new Pose2d(beginPose.position.x+TILE/3, beginPose.position.y + 2 * TILE + TILE/6, Math.toRadians(0)), Math.toRadians(45))
-                        .waitSeconds(3.5)
-                        .setTangent(Math.toRadians(245))
-                        .splineToLinearHeading(new Pose2d(-2 * TILE,-2 * TILE + TILE / 2, Math.toRadians(235)), Math.toRadians(245))
+                    //Sample 3
+                    Presets.Scorer.extendViper(extendSamplePos3 /*TODO FIND POSITION*/),
+                    Presets.Scorer.rotateHorizontalClaw(rotateClawSamplePos3 /*TODO FIND POSITION*/),
+                    new SleepAction(0.5), //TODO TIME FOR VIPERS TO GET TO POSITION
+                    Presets.Scorer.rotateViper(rotateSamplePos /*TODO FIND POSITION*/),
+                    new SleepAction(0.2), //TODO TIME FOR VIPERS TO LOWER
+                    Presets.Scorer.openClawPos(),
+                    new SleepAction(0.1),
+                    Presets.Scorer.pickupSamplePos(),
 
-                        .waitSeconds(1.5) // park
-                        .setTangent(Math.toRadians(0))
-                        .waitSeconds(1)
-                        .splineToLinearHeading(new Pose2d(beginPose.position.x + 3 * TILE, beginPose.position.y, Math.toRadians(0)), Math.toRadians(-90))
+                    goToBasket,
+                    Presets.Scorer.prepareLeaveSamplePos(),
+                    new SleepAction(0.5), //TODO TIME FOR VIPERS TO GET TO POSITION
+                    Presets.Scorer.closeClawPos(),
+                    new SleepAction(0.2),
+                    new ParallelAction(goToPark.build(),Presets.Scorer.preparePickupSamplePos()),
 
-                        .build()
-        );
+                    //Park
+                    Presets.Scorer.extendViper(extendParkPos /*TODO FIND POSITION*/),
+                    Presets.Scorer.rotateViper(rotateParkPos /*TODO FIND POSITION*/)
+                    ));
     }
 }

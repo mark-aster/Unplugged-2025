@@ -25,7 +25,7 @@ public class TeleOpTest extends LinearOpMode
     private boolean inverted = false;
 
     // -- Scorer -- //
-    private boolean keepClawParallel = true;
+    private boolean keepClawParallel = false    ;
     private boolean isSpeciman = false;
     private int currentStep = 0;
     private int currentStepSpecimen = 0;
@@ -71,7 +71,7 @@ public class TeleOpTest extends LinearOpMode
 
     private void reverseMotors()
     {
-        Motors.intakeRotate.setDirection(DcMotorSimple.Direction.REVERSE);
+
     }
 
     private void startLoop()
@@ -306,7 +306,6 @@ public class TeleOpTest extends LinearOpMode
 
     private void pickupSamplePos()
     {
-        keepClawParallel = false;
         horizontalPosition = Constants.INTAKE_VIPERS.MIN_POSITION_EXTEND;
         horizontalClawPosition = 1;
         verticalClawServoPosition = 0;
