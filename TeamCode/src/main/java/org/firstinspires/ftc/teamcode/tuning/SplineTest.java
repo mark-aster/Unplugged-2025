@@ -1,54 +1,61 @@
 package org.firstinspires.ftc.teamcode.tuning;
 
-import static org.firstinspires.ftc.teamcode.subsystems.Constants.FIELD.TILE;
-
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.PinpointDrive;
+import org.firstinspires.ftc.teamcode.SparkFunOTOSDrive;
+import org.firstinspires.ftc.teamcode.TankDrive;
 
 public final class SplineTest extends LinearOpMode {
     @Override
-    public void runOpMode() throws InterruptedException
-    {
-        Pose2d beginPoseYellow = new Pose2d(-TILE * 1.5,-2.5 * TILE, Math.toRadians(90));
+    public void runOpMode() throws InterruptedException {
+        Pose2d beginPose = new Pose2d(0, 0, 0);
+        if (TuningOpModes.DRIVE_CLASS.equals(PinpointDrive.class)) {
+            PinpointDrive drive = new PinpointDrive(hardwareMap, beginPose);
 
-        Pose2d beginPoseRed = new Pose2d(2 * TILE,-2.5 * TILE, Math.toRadians(90));
+            waitForStart();
 
-        PinpointDrive drive = new PinpointDrive(hardwareMap, beginPoseRed);
+            Actions.runBlocking(
+                    drive.actionBuilder(beginPose)
+                            .splineTo(new Vector2d(30, 30), Math.PI / 2)
+                            .splineTo(new Vector2d(0, 60), Math.PI)
+                            .build());
+        } else if (TuningOpModes.DRIVE_CLASS.equals(SparkFunOTOSDrive.class)) {
+            SparkFunOTOSDrive drive = new SparkFunOTOSDrive(hardwareMap, beginPose);
 
-        waitForStart();
+            waitForStart();
 
+            Actions.runBlocking(
+                    drive.actionBuilder(beginPose)
+                            .splineTo(new Vector2d(30, 30), Math.PI / 2)
+                            .splineTo(new Vector2d(0, 60), Math.PI)
+                            .build());
+        } else if (TuningOpModes.DRIVE_CLASS.equals(MecanumDrive.class)) {
+            MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
 
-        Actions.runBlocking(
-                drive.actionBuilder(beginPoseRed)
+            waitForStart();
 
-                        .splineToLinearHeading(new Pose2d(beginPoseRed.position.x, beginPoseRed.position.y + TILE/1.5, Math.toRadians(90)), Math.toRadians(90))
-                        .waitSeconds(1.5)
-                        .setTangent(Math.toRadians(200))
-                        .splineToLinearHeading(new Pose2d(beginPoseRed.position.x - TILE * 3.5, beginPoseRed.position.y, Math.toRadians(180) ), Math.toRadians(190))
-                        .waitSeconds(1.5)
+            Actions.runBlocking(
+                drive.actionBuilder(beginPose)
+                        .splineTo(new Vector2d(30, 30), Math.PI / 2)
+                        .splineTo(new Vector2d(0, 60), Math.PI)
+                        .build());
+        } else if (TuningOpModes.DRIVE_CLASS.equals(TankDrive.class)) {
+            TankDrive drive = new TankDrive(hardwareMap, beginPose);
 
-                        .setTangent(Math.toRadians(15))
-                        .splineToLinearHeading(new Pose2d(beginPoseRed.position.x, beginPoseRed.position.y + TILE/1.5, Math.toRadians(65)), Math.toRadians(0))
-                        .waitSeconds(1.5)
-                        .setTangent(Math.toRadians(200))
-                        .splineToLinearHeading(new Pose2d(beginPoseRed.position.x - TILE * 3.5, beginPoseRed.position.y, Math.toRadians(180) ), Math.toRadians(190))
-                        .waitSeconds(1.5)
+            waitForStart();
 
-                        .setTangent(Math.toRadians(15))
-                        .splineToLinearHeading(new Pose2d(beginPoseRed.position.x, beginPoseRed.position.y + TILE/1.5, Math.toRadians(45)), Math.toRadians(0))
-                        .waitSeconds(1.5)
-                        .setTangent(Math.toRadians(200))
-                        .splineToLinearHeading(new Pose2d(beginPoseRed.position.x - TILE * 3.5, beginPoseRed.position.y, Math.toRadians(180) ), Math.toRadians(190))
-                        .waitSeconds(1.5)
-
-                        .setTangent(0)
-                        .splineToLinearHeading(new Pose2d(beginPoseRed.position.x+ TILE/2, beginPoseRed.position.y, Math.toRadians(180)), Math.toRadians(0))
-
-                        .build()
-        );
+            Actions.runBlocking(
+                    drive.actionBuilder(beginPose)
+                            .splineTo(new Vector2d(30, 30), Math.PI / 2)
+                            .splineTo(new Vector2d(0, 60), Math.PI)
+                            .build());
+        } else {
+            throw new RuntimeException();
+        }
     }
 }
