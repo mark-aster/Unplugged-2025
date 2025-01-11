@@ -14,13 +14,13 @@ public class Servos
     public static void init(HardwareMap hardwareMap) {
         try
         {
-            horizontalRotate = hardwareMap.get(Servo.class, "horizontalRotate");
-            verticalRotate = hardwareMap.get(Servo.class, "verticalRotate");
-            clawRotate = hardwareMap.get(Servo.class, "clawRotate");
+            horizontalRotate = hardwareMap.get(Servo.class, "horizontal");
+            verticalRotate = hardwareMap.get(Servo.class, "vertical");
+            clawRotate = hardwareMap.get(Servo.class, "claw");
 
-            horizontalRotate.scaleRange(Constants.INTAKE_CLAW.HORIZONTAL_MIN, Constants.INTAKE_CLAW.HORIZONTAL_MAX);
-            verticalRotate.scaleRange(Constants.INTAKE_CLAW.VERTICAL_MIN, Constants.INTAKE_CLAW.VERTICAL_MAX);
-            clawRotate.scaleRange(Constants.INTAKE_CLAW.CLOSED, Constants.INTAKE_CLAW.OPEN);
+//            horizontalRotate.scaleRange(Constants.INTAKE_CLAW.HORIZONTAL_MIN, Constants.INTAKE_CLAW.HORIZONTAL_MAX);
+//            verticalRotate.scaleRange(Constants.INTAKE_CLAW.VERTICAL_MIN, Constants.INTAKE_CLAW.VERTICAL_MAX);
+//            clawRotate.scaleRange(Constants.INTAKE_CLAW.CLOSED, Constants.INTAKE_CLAW.OPEN);
         }
         catch (Exception ignore) {}
     }

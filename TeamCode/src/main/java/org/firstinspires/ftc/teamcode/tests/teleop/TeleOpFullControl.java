@@ -128,55 +128,54 @@ public class TeleOpFullControl extends LinearOpMode
 
     private void handleScoring()
     {
-        handleVipers();
         handleClaws();
     }
 
-    private void handleVipers()
-    {
-        double armsInput = -gamepad2.left_stick_y;
-        double rotateInput = -gamepad2.right_stick_y;
-        double extendInput = gamepad2.right_trigger - gamepad2.left_trigger;
-
-        verticalPosition = Func.adjustPositionMotor(verticalPosition,
-                armsInput,
-                Constants.VERTICAL_VIPERS.MIN_POSITION,
-                Constants.VERTICAL_VIPERS.MAX_POSITION,
-                Constants.TELEOP.VERTICAL_VIPER_SPEED);
-
-        horizontalPosition = Func.adjustPositionMotor(horizontalPosition,
-                extendInput,
-                Constants.INTAKE_VIPERS.MIN_POSITION_EXTEND,
-                Constants.INTAKE_VIPERS.MAX_POSITION_EXTEND,
-                Constants.TELEOP.HORIZONTAL_VIPER_SPEED);
-
-
-        //if(keepExtendRotateSynced) rotationPosition = rotateAfterExtend();
-        rotationPosition = Func.adjustPositionMotor(rotationPosition,
-                rotateInput,
-                Constants.INTAKE_VIPERS.MIN_POSITION_ROTATE,
-                Constants.INTAKE_VIPERS.MAX_POSITION_ROTATE,
-                Constants.TELEOP.ROTATION_VIPER_SPEED);
-
-        Func.updateLastTime();
-
-        setPositions();
-
-        // Debug
-
-        Debug.log("Debug", "-- Vertical Vipers-- ");
-        Debug.log("verticalPosition", verticalPosition);
-        Debug.log("verticalInput", armsInput);
-        Debug.log("horizontalPosition", horizontalPosition);
-        Debug.log("horizontalInput", extendInput);
-        Debug.log("rotationPosition ", rotationPosition);
-        Debug.log("rotationInput", rotateInput);
-        Debug.log("servoHorizontalInput", clawHorizontalInput);
-        Debug.log("servoHorizontalPosition", horizontalClawPosition);
-        Debug.log("servoVerticalInput", clawVerticalInput);
-        Debug.log("servoVerticalPosition", verticalClawServoPosition);
-        Debug.log("currentStep", currentStep);
-    }
+//    private void handleVipers()
+//    {
+//        double armsInput = -gamepad2.left_stick_y;
+//        double rotateInput = -gamepad2.right_stick_y;
+//        double extendInput = gamepad2.right_trigger - gamepad2.left_trigger;
+//
+//        verticalPosition = Func.adjustPositionMotor(verticalPosition,
+//                armsInput,
+//                Constants.VERTICAL_VIPERS.MIN_POSITION,
+//                Constants.VERTICAL_VIPERS.MAX_POSITION,
+//                Constants.TELEOP.VERTICAL_VIPER_SPEED);
+//
+//        horizontalPosition = Func.adjustPositionMotor(horizontalPosition,
+//                extendInput,
+//                Constants.INTAKE_VIPERS.MIN_POSITION_EXTEND,
+//                Constants.INTAKE_VIPERS.MAX_POSITION_EXTEND,
+//                Constants.TELEOP.HORIZONTAL_VIPER_SPEED);
+//
+//
+//        //if(keepExtendRotateSynced) rotationPosition = rotateAfterExtend();
+//        rotationPosition = Func.adjustPositionMotor(rotationPosition,
+//                rotateInput,
+//                Constants.INTAKE_VIPERS.MIN_POSITION_ROTATE,
+//                Constants.INTAKE_VIPERS.MAX_POSITION_ROTATE,
+//                Constants.TELEOP.ROTATION_VIPER_SPEED);
+//
+//        Func.updateLastTime();
+//
+//        setPositions();
+//
+//        // Debug
+//
+//        Debug.log("Debug", "-- Vertical Vipers-- ");
+//        Debug.log("verticalPosition", verticalPosition);
+//        Debug.log("verticalInput", armsInput);
+//        Debug.log("horizontalPosition", horizontalPosition);
+//        Debug.log("horizontalInput", extendInput);
+//        Debug.log("rotationPosition ", rotationPosition);
+//        Debug.log("rotationInput", rotateInput);
+//        Debug.log("servoHorizontalInput", clawHorizontalInput);
+//        Debug.log("servoHorizontalPosition", horizontalClawPosition);
+//        Debug.log("servoVerticalInput", clawVerticalInput);
+//        Debug.log("servoVerticalPosition", verticalClawServoPosition);
+//        Debug.log("currentStep", currentStep);
+//    }
 
     private int rotateAfterExtend()
     {

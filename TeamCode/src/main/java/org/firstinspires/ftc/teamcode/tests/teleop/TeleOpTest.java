@@ -27,7 +27,7 @@ public class TeleOpTest extends LinearOpMode
     // -- Scorer -- //
     private boolean keepClawParallel = false    ;
     private boolean isSpeciman = false;
-    private int currentStep = 0;
+    private int currentStep = 1;
     private int currentStepSpecimen = 0;
 
     // -- Positions Motors -- //
@@ -37,7 +37,7 @@ public class TeleOpTest extends LinearOpMode
 
     // -- Positions Servo -- //
     private double clawServoPosition = 0;
-    private double horizontalClawPosition = 0;
+    private double horizontalClawPosition = 0.84;
     private double verticalClawServoPosition = 0;
 
     @Override
@@ -56,17 +56,14 @@ public class TeleOpTest extends LinearOpMode
         Sensors.init(hardwareMap);
         Debug.init(telemetry, FtcDashboard.getInstance());
 
-        setPresetPositionsSample();
         setPositions();
+        setPresetPositionsSample();
+
         reverseMotors();
     }
 
     private void setPositions()
     {
-        Func.SetMotorPosition(Motors.armLeft, verticalPosition);
-        Func.SetMotorPosition(Motors.armRight, verticalPosition);
-        Func.SetMotorPosition(Motors.intakeExtend, horizontalPosition);
-        Func.SetMotorPosition(Motors.intakeRotate, rotationPosition);
     }
 
     private void reverseMotors()
@@ -115,29 +112,20 @@ public class TeleOpTest extends LinearOpMode
         Motors.leftRear.setPower(backLeftPower);
         Motors.rightFront.setPower(frontRightPower);
         Motors.rightRear.setPower(backRightPower);
-
-        // Debug
-/*
-        Debug.log("Debug", "Chassis");
-        Debug.log("frontLeftPower", frontLeftPower);
-        Debug.log("backLeftPower", backLeftPower);
-        Debug.log("frontRightPower", frontRightPower);
-        Debug.log("backRightPower", backRightPower);*/
     }
 
     // -- Manipulator / Scorer Controls -- //
 
     private void handleScoring()
     {
-        handleVipers();
         handleClaws();
     }
 
     private void handleVipers()
     {
-        double rotateInput = -gamepad2.right_stick_y;
-        double extendInput = -gamepad2.left_stick_y;
-        double armsInput = gamepad2.right_bumper ? 1 : 0 - gamepad2.right_trigger;
+        double rotateInput = -gamepad1.right_stick_y;
+        double extendInput = -gamepad1.left_stick_y;
+        double armsInput = gamepad1.right_bumper ? 1 : 0 - gamepad1.right_trigger;
 
         verticalPosition = Func.adjustPositionMotor(verticalPosition,
                 armsInput,
@@ -157,7 +145,7 @@ public class TeleOpTest extends LinearOpMode
                 Constants.INTAKE_VIPERS.MAX_POSITION_ROTATE,
                 Constants.TELEOP.ROTATION_VIPER_SPEED);
 
-        Func.updateLastTime();
+
 
         setPositions();
 
@@ -182,13 +170,17 @@ public class TeleOpTest extends LinearOpMode
                 clawHorizontalInput,
                 0,
                 1,
-                1);
+                1.5);
+
+        double clawVerticalInput = Input.isDown("scorer_right_bumper", gamepad2.right_bumper) ? -1
+                : gamepad2.right_trigger > 0.01 ? 1
+                : 0;
+
+        verticalClawServoPosition = Func.adjustPositionServo(verticalClawServoPosition, clawVerticalInput,0.5,0.8,1);
 
         Servos.horizontalRotate.setPosition(horizontalClawPosition);
         Servos.clawRotate.setPosition(clawServoPosition);
-
-        if (keepClawParallel) Servos.verticalRotate.setPosition(servoParallel());
-        else Servos.verticalRotate.setPosition(verticalClawServoPosition);
+        Servos.verticalRotate.setPosition(verticalClawServoPosition);
 
         if(Input.onKeyDown("scorer_options", gamepad2.start)) isSpeciman = !isSpeciman;
 
@@ -197,7 +189,7 @@ public class TeleOpTest extends LinearOpMode
             if(!isSpeciman)
             {
                 currentStep++;
-                if (currentStep > 4) currentStep = 0;
+                if (currentStep > 1) currentStep = 0;
             }
             else
             {
@@ -210,31 +202,9 @@ public class TeleOpTest extends LinearOpMode
 
         if (Input.isDown("scorer_a", gamepad2.a) || Input.isDown("scorer_b", gamepad2.b))
         {
-            if(!isSpeciman)
                 setPresetPositionsSample();
-            else
-                setPresetPositionsSpecimen();
         }
-
-    }
-
-    private void setPresetPositionsSpecimen()
-    {
-        switch(currentStepSpecimen)
-        {
-            case 0:
-                preparePickupSpecimenPos();
-                break;
-            case 1:
-                closeClawPos();
-                break;
-            case 2:
-                prepareSpecimenLeavePos();
-                break;
-            case 3:
-                leaveSpecimenPos();
-                break;
-        }
+        Func.updateLastTime();
     }
 
     private void setPresetPositionsSample()
@@ -242,18 +212,9 @@ public class TeleOpTest extends LinearOpMode
         switch (currentStep)
         {
             case 0:
-                preparePickupSamplePos();
-                break;
-            case 1:
                 openClawPos();
                 break;
-            case 2:
-                pickupSamplePos();
-                break;
-            case 3:
-                prepareLeaveSamplePos();
-                break;
-            case 4:
+            case 1:
                 closeClawPos();
                 break;
         }
@@ -261,11 +222,9 @@ public class TeleOpTest extends LinearOpMode
 
     private void preparePickupSpecimenPos()
     {
-        verticalPosition = 0;
-        horizontalPosition = 0;
-        rotationPosition = 100;
-        verticalClawServoPosition = 0.0935;
+        verticalClawServoPosition = 0.69;
         horizontalClawPosition = 0.5;
+        clawServoPosition = 0.38;
     }
 
     private void closeClawPos()
@@ -291,40 +250,21 @@ public class TeleOpTest extends LinearOpMode
 
     private void preparePickupSamplePos()
     {
-        clawServoPosition = 0;
-        verticalPosition = Constants.VERTICAL_VIPERS.MIN_POSITION;
-        horizontalPosition = Constants.INTAKE_VIPERS.MIN_POSITION_EXTEND;
-        horizontalClawPosition = 0;
-        verticalClawServoPosition = 0.4124;
-        rotationPosition = 495;
+        verticalClawServoPosition = 0.69;
+        clawServoPosition = 0.38;
     }
 
     private void openClawPos()
     {
-        clawServoPosition = 1;
+        clawServoPosition = 0.5;
     }
 
     private void pickupSamplePos()
     {
-        horizontalPosition = Constants.INTAKE_VIPERS.MIN_POSITION_EXTEND;
         horizontalClawPosition = 1;
-        verticalClawServoPosition = 0;
+        verticalClawServoPosition = 0.69;
     }
 
-    private void prepareLeaveSamplePos()
-    {
-        verticalPosition = 1570;
-        rotationPosition = 1853;
-        horizontalPosition = 1794;
-        verticalClawServoPosition = 0.475;
-        horizontalClawPosition = 0.5186;
-    }
-
-    private double servoParallel()
-    {
-        int motorPos = Motors.intakeRotate.getCurrentPosition();
-        return 0.000136*motorPos+0.37;
-    }
 
     // -- Odometry Testing -- //
 
